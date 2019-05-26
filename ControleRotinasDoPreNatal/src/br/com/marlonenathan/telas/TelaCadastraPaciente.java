@@ -241,7 +241,6 @@ public class TelaCadastraPaciente extends javax.swing.JFrame {
 				|| p.getTelefone().replaceAll("[^0-9]", "").length() == 0
 				|| p.getNascimento().replaceAll("[^0-9]", "").length() == 0) {
 			JOptionPane.showMessageDialog(null, "Todos os campos são de preencheimento obrigatório");
-			return;
 		} else {
 			dao.createPaciente(p);
 			new TelaCadastroDePacientes().setVisible(true);

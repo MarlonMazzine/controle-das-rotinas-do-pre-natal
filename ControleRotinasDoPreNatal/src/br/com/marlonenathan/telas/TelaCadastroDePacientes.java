@@ -104,20 +104,21 @@ public final class TelaCadastroDePacientes extends javax.swing.JFrame {
 		tbPacientes.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
 		tbPacientes.setModel(new DefaultTableModel(new Object[][] { { null, "", null, null }, },
 				new String[] { "Nome", "SUS", "Telefone", "Nascimento" }));
-		tbPacientes.getColumnModel().getColumn(0).setPreferredWidth(265);
+		tbPacientes.getColumnModel().getColumn(0).setPreferredWidth(200);
+		tbPacientes.getColumnModel().getColumn(1).setPreferredWidth(100);
 		tbPacientes.setColumnSelectionAllowed(true);
 		tbPacientes.setRowHeight(30);
 		jScrollPane1.setViewportView(tbPacientes);
 		if (tbPacientes.getColumnModel().getColumnCount() > 0) {
-			tbPacientes.getColumnModel().getColumn(1).setMinWidth(150);
-			tbPacientes.getColumnModel().getColumn(1).setPreferredWidth(150);
-			tbPacientes.getColumnModel().getColumn(1).setMaxWidth(150);
-			tbPacientes.getColumnModel().getColumn(2).setMinWidth(170);
-			tbPacientes.getColumnModel().getColumn(2).setPreferredWidth(170);
-			tbPacientes.getColumnModel().getColumn(2).setMaxWidth(170);
-			tbPacientes.getColumnModel().getColumn(3).setMinWidth(150);
-			tbPacientes.getColumnModel().getColumn(3).setPreferredWidth(150);
-			tbPacientes.getColumnModel().getColumn(3).setMaxWidth(150);
+			tbPacientes.getColumnModel().getColumn(1).setMinWidth(200);
+			tbPacientes.getColumnModel().getColumn(1).setPreferredWidth(200);
+			tbPacientes.getColumnModel().getColumn(1).setMaxWidth(200);
+			tbPacientes.getColumnModel().getColumn(2).setMinWidth(160);
+			tbPacientes.getColumnModel().getColumn(2).setPreferredWidth(160);
+			tbPacientes.getColumnModel().getColumn(2).setMaxWidth(160);
+			tbPacientes.getColumnModel().getColumn(3).setMinWidth(110);
+			tbPacientes.getColumnModel().getColumn(3).setPreferredWidth(110);
+			tbPacientes.getColumnModel().getColumn(3).setMaxWidth(110);
 		}
 
 		jButton2.setBackground(new java.awt.Color(0, 153, 102));
@@ -282,18 +283,24 @@ public final class TelaCadastroDePacientes extends javax.swing.JFrame {
 	}// GEN-LAST:event_btnVoltarActionPerformed
 
 	private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnExcluirActionPerformed
-		if (tbPacientes.getSelectedRow() != -1) {
-			Paciente p = new Paciente();
-			PessoaDAO pdao = new PessoaDAO();
+		int resposta = JOptionPane.showConfirmDialog(null, "Tem certeza de que deseja excluir?", "Confirmar exlusão",
+				JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 
-			p.setDocumento(tbPacientes.getValueAt(tbPacientes.getSelectedRow(), 1).toString());
+		if (resposta == JOptionPane.YES_OPTION) {
+			if (tbPacientes.getSelectedRow() != -1) {
+				Paciente p = new Paciente();
+				PessoaDAO pdao = new PessoaDAO();
 
-			pdao.deletePaciente(p);
+				p.setDocumento(tbPacientes.getValueAt(tbPacientes.getSelectedRow(), 1).toString());
 
-			readTable();
-		} else {
-			JOptionPane.showMessageDialog(null, "Selecione um produto para excluir");
+				pdao.deletePaciente(p);
+
+				readTable();
+			} else {
+				JOptionPane.showMessageDialog(null, "Selecione um paciente para excluir");
+			}
 		}
+
 	}// GEN-LAST:event_btnExcluirActionPerformed
 
 	private void btnEditarMouseClicked(java.awt.event.MouseEvent evt) {// GEN-FIRST:event_btnEditarMouseClicked
@@ -305,10 +312,10 @@ public final class TelaCadastroDePacientes extends javax.swing.JFrame {
 			telaEdit.pack();
 			telaEdit.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
-			telaEdit.txtNome.setText(tabela.getValueAt(index, 1).toString());
-			telaEdit.txtSUS.setText(tabela.getValueAt(index, 2).toString());
-			telaEdit.txtTelefone.setText(tabela.getValueAt(index, 3).toString());
-			telaEdit.txtNascimento.setText(tabela.getValueAt(index, 4).toString());
+			telaEdit.txtNome.setText(tabela.getValueAt(index, 0).toString());
+			telaEdit.txtSUS.setText(tabela.getValueAt(index, 1).toString());
+			telaEdit.txtTelefone.setText(tabela.getValueAt(index, 2).toString());
+			telaEdit.txtNascimento.setText(tabela.getValueAt(index, 3).toString());
 
 			readTable();
 			this.dispose();

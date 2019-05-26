@@ -9,6 +9,7 @@ import java.awt.Color;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
+import javax.swing.JOptionPane;
 
 import br.com.marlonenathan.model.bean.Paciente;
 import br.com.marlonenathan.model.bean.Pessoa;
@@ -224,9 +225,15 @@ public final class TelaEditarPaciente extends javax.swing.JFrame {
 		p.setTelefone(txtTelefone.getText());
 		p.setNascimento(txtNascimento.getText());
 
-		dao.updatePaciente(p);
-		new TelaCadastroDePacientes().setVisible(true);
-		this.dispose();
+		if (txtNome.getText().length() == 0 || txtSUS.getText().replaceAll("[^0-9]", "").length() == 0
+				|| txtTelefone.getText().replaceAll("[^0-9]", "").length() == 0
+				|| txtNascimento.getText().replaceAll("[^0-9]", "").length() == 0) {
+			JOptionPane.showMessageDialog(null, "Todos os campos são de preencheimento obrigatório");
+		} else {
+			dao.updatePaciente(p);
+			new TelaCadastroDePacientes().setVisible(true);
+			this.dispose();
+		}
 	}// GEN-LAST:event_btnSalvarActionPerformed
 
 	private void btnSairActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnSairActionPerformed
