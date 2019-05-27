@@ -246,11 +246,11 @@ public class TelaLogin extends javax.swing.JFrame {
         UsuarioDAO dao = new UsuarioDAO();
 
         if (dao.checkLoginChefe(login, senha)) {
-            new TelaEscolha().setVisible(true);
+            new TelaEscolhaChefe().setVisible(true);
             this.dispose();
         } else if (dao.checkLoginFuncionario(login, senha)) {
-            //new TelaCadastroPaciente
-            JOptionPane.showMessageDialog(null, "Acesso liberado para o funcionario!");
+            new TelaEscolhaFuncionario().setVisible(true);
+            this.dispose();
         } else {
             JOptionPane.showMessageDialog(null, "Usuário ou senha inválidos!");
         }

@@ -6,7 +6,14 @@
 package br.com.marlonenathan.telas;
 
 import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -31,14 +38,44 @@ public final class TelaCadastroDePacientes extends javax.swing.JFrame {
 	 * Creates new form TelaCadastroDePacientes
 	 */
 	public TelaCadastroDePacientes() {
+		setMaximumSize(new Dimension(1280, 720));
 		initComponents();
 		DefaultTableModel modelo = (DefaultTableModel) tbPacientes.getModel();
 		tbPacientes.setRowSorter(new TableRowSorter<DefaultTableModel>(modelo));
+		jPanel2.setLayout(null);
+		jPanel2.add(txtPesquisaPeloNome);
+		jPanel2.add(btnPesquisar);
+		jPanel2.add(jScrollPane1);
+		jPanel2.add(btnVoltar);
+		jPanel2.add(btnIncluir);
+		jPanel2.add(btnEditar);
+		jPanel2.add(btnExcluir);
+
+		btnNovoAtendimento = new JButton();
+		btnNovoAtendimento.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnNovoAtendimento.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				btnNovoAtendimentoActionPerformed(e);
+			}
+		});
+		btnNovoAtendimento.setIcon(new ImageIcon(
+				TelaCadastroDePacientes.class.getResource("/br/com/marlonenathan/imagens/adicionarPessoa.png")));
+		btnNovoAtendimento.setToolTipText("");
+		btnNovoAtendimento.setText("  Iniciar um novo atendimento");
+		btnNovoAtendimento.setForeground(Color.WHITE);
+		btnNovoAtendimento.setFont(new Font("Dialog", Font.BOLD, 18));
+		btnNovoAtendimento.setFocusPainted(false);
+		btnNovoAtendimento.setFocusCycleRoot(true);
+		btnNovoAtendimento.setBorderPainted(false);
+		btnNovoAtendimento.setBackground(new Color(51, 204, 255));
+		btnNovoAtendimento.setBounds(310, 604, 366, 70);
+		jPanel2.add(btnNovoAtendimento);
 
 		readTable();
 	}
 
 	TelaEditarPaciente telaEdit = new TelaEditarPaciente();
+	TelaAtendimento telaAtendimento = new TelaAtendimento();
 	Paciente p = new Paciente();
 
 	/**
@@ -53,13 +90,20 @@ public final class TelaCadastroDePacientes extends javax.swing.JFrame {
 
 		jPanel2 = new javax.swing.JPanel();
 		txtPesquisaPeloNome = new javax.swing.JTextField();
+		txtPesquisaPeloNome.setBounds(38, 36, 468, 40);
 		btnPesquisar = new javax.swing.JButton();
+		btnPesquisar.setBounds(524, 36, 79, 40);
 		jScrollPane1 = new javax.swing.JScrollPane();
+		jScrollPane1.setBounds(38, 94, 1213, 492);
 		tbPacientes = new javax.swing.JTable();
-		jButton2 = new javax.swing.JButton();
+		btnIncluir = new javax.swing.JButton();
+		btnIncluir.setBounds(780, 604, 145, 70);
 		btnEditar = new javax.swing.JButton();
+		btnEditar.setBounds(943, 604, 145, 70);
 		btnExcluir = new javax.swing.JButton();
+		btnExcluir.setBounds(1106, 604, 145, 70);
 		btnVoltar = new javax.swing.JButton();
+		btnVoltar.setBounds(38, 604, 145, 70);
 
 		setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 		setTitle("Cadastros de paciente");
@@ -121,20 +165,20 @@ public final class TelaCadastroDePacientes extends javax.swing.JFrame {
 			tbPacientes.getColumnModel().getColumn(3).setMaxWidth(110);
 		}
 
-		jButton2.setBackground(new java.awt.Color(0, 153, 102));
-		jButton2.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
-		jButton2.setForeground(new java.awt.Color(255, 255, 255));
-		jButton2.setIcon(
+		btnIncluir.setBackground(new java.awt.Color(0, 153, 102));
+		btnIncluir.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+		btnIncluir.setForeground(new java.awt.Color(255, 255, 255));
+		btnIncluir.setIcon(
 				new javax.swing.ImageIcon(getClass().getResource("/br/com/marlonenathan/imagens/adicionarPessoa.png"))); // NOI18N
-		jButton2.setText("  Incluir");
-		jButton2.setToolTipText("");
-		jButton2.setBorderPainted(false);
-		jButton2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-		jButton2.setFocusCycleRoot(true);
-		jButton2.setFocusPainted(false);
-		jButton2.addActionListener(new java.awt.event.ActionListener() {
+		btnIncluir.setText("  Incluir");
+		btnIncluir.setToolTipText("");
+		btnIncluir.setBorderPainted(false);
+		btnIncluir.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+		btnIncluir.setFocusCycleRoot(true);
+		btnIncluir.setFocusPainted(false);
+		btnIncluir.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				jButton2ActionPerformed(evt);
+				btnIncluirActionPerformed(evt);
 			}
 		});
 
@@ -189,52 +233,6 @@ public final class TelaCadastroDePacientes extends javax.swing.JFrame {
 			}
 		});
 
-		javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-		jPanel2.setLayout(jPanel2Layout);
-		jPanel2Layout.setHorizontalGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-				.addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-						.addContainerGap(38, Short.MAX_VALUE)
-						.addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-								.addGroup(jPanel2Layout.createSequentialGroup()
-										.addComponent(txtPesquisaPeloNome, javax.swing.GroupLayout.PREFERRED_SIZE, 468,
-												javax.swing.GroupLayout.PREFERRED_SIZE)
-										.addGap(18, 18, 18).addComponent(btnPesquisar,
-												javax.swing.GroupLayout.PREFERRED_SIZE, 79,
-												javax.swing.GroupLayout.PREFERRED_SIZE))
-								.addComponent(jScrollPane1)
-								.addGroup(jPanel2Layout.createSequentialGroup()
-										.addComponent(btnVoltar, javax.swing.GroupLayout.PREFERRED_SIZE, 145,
-												javax.swing.GroupLayout.PREFERRED_SIZE)
-										.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 597,
-												Short.MAX_VALUE)
-										.addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 145,
-												javax.swing.GroupLayout.PREFERRED_SIZE)
-										.addGap(18, 18, 18)
-										.addComponent(btnEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 145,
-												javax.swing.GroupLayout.PREFERRED_SIZE)
-										.addGap(18, 18, 18).addComponent(btnExcluir,
-												javax.swing.GroupLayout.PREFERRED_SIZE, 145,
-												javax.swing.GroupLayout.PREFERRED_SIZE)))
-						.addGap(29, 29, 29)));
-		jPanel2Layout.setVerticalGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-				.addGroup(jPanel2Layout.createSequentialGroup().addGap(36, 36, 36)
-						.addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-								.addComponent(txtPesquisaPeloNome, javax.swing.GroupLayout.PREFERRED_SIZE, 40,
-										javax.swing.GroupLayout.PREFERRED_SIZE)
-								.addComponent(btnPesquisar, javax.swing.GroupLayout.PREFERRED_SIZE, 40,
-										javax.swing.GroupLayout.PREFERRED_SIZE))
-						.addGap(18, 18, 18).addComponent(jScrollPane1).addGap(18, 18, 18)
-						.addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-								.addComponent(btnVoltar, javax.swing.GroupLayout.PREFERRED_SIZE, 70,
-										javax.swing.GroupLayout.PREFERRED_SIZE)
-								.addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 70,
-										javax.swing.GroupLayout.PREFERRED_SIZE)
-								.addComponent(btnEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 70,
-										javax.swing.GroupLayout.PREFERRED_SIZE)
-								.addComponent(btnExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, 70,
-										javax.swing.GroupLayout.PREFERRED_SIZE))
-						.addGap(46, 46, 46)));
-
 		javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
 		getContentPane().setLayout(layout);
 		layout.setHorizontalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -264,11 +262,11 @@ public final class TelaCadastroDePacientes extends javax.swing.JFrame {
 	private void txtPesquisaPeloNomeFocusLost(java.awt.event.FocusEvent evt) {// GEN-FIRST:event_txtPesquisaPeloNomeFocusLost
 		pesquisaPeloNome = txtPesquisaPeloNome.getText();
 		if (pesquisaPeloNome.length() == 0 || txtPesquisaPeloNome.getText().contains("Nome do paciente")) {
-			txtPesquisaPeloNome.setText("Nome do funcionário");
+			txtPesquisaPeloNome.setText("Nome do paciente");
 		}
 	}// GEN-LAST:event_txtPesquisaPeloNomeFocusLost
 
-	private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jButton2ActionPerformed
+	private void btnIncluirActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jButton2ActionPerformed
 		new TelaCadastraPaciente().setVisible(true);
 		this.dispose();
 	}// GEN-LAST:event_jButton2ActionPerformed
@@ -278,7 +276,7 @@ public final class TelaCadastroDePacientes extends javax.swing.JFrame {
 	}// GEN-LAST:event_btnPesquisarActionPerformed
 
 	private void btnVoltarActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnVoltarActionPerformed
-		// alguma outra tela
+		new TelaEscolhaFuncionario().setVisible(true);
 		this.dispose();
 	}// GEN-LAST:event_btnVoltarActionPerformed
 
@@ -300,7 +298,6 @@ public final class TelaCadastroDePacientes extends javax.swing.JFrame {
 				JOptionPane.showMessageDialog(null, "Selecione um paciente para excluir");
 			}
 		}
-
 	}// GEN-LAST:event_btnExcluirActionPerformed
 
 	private void btnEditarMouseClicked(java.awt.event.MouseEvent evt) {// GEN-FIRST:event_btnEditarMouseClicked
@@ -323,6 +320,25 @@ public final class TelaCadastroDePacientes extends javax.swing.JFrame {
 			JOptionPane.showMessageDialog(null, "Selecione um paciente para editar");
 		}
 	}// GEN-LAST:event_btnEditarMouseClicked
+
+	private void btnNovoAtendimentoActionPerformed(ActionEvent e) {
+		if (tbPacientes.getSelectedRow() != -1) {
+			int index = tbPacientes.getSelectedRow();
+			TableModel tabela = tbPacientes.getModel();
+
+			telaAtendimento.setVisible(true);
+			telaAtendimento.pack();
+			telaAtendimento.setLocationRelativeTo(null);
+
+			telaAtendimento.txtNomePaciente.setText(tabela.getValueAt(index, 0).toString());
+			telaAtendimento.txtSUS.setText(tabela.getValueAt(index, 1).toString());
+
+			readTable();
+			this.dispose();
+		} else {
+			JOptionPane.showMessageDialog(null, "Selecione um paciente para iniciar o atendimento");
+		}
+	}
 
 	private void readTable() {
 		DefaultTableModel modelo = (DefaultTableModel) tbPacientes.getModel();
@@ -385,10 +401,11 @@ public final class TelaCadastroDePacientes extends javax.swing.JFrame {
 	private javax.swing.JButton btnExcluir;
 	private javax.swing.JButton btnPesquisar;
 	private javax.swing.JButton btnVoltar;
-	private javax.swing.JButton jButton2;
+	private javax.swing.JButton btnIncluir;
 	private javax.swing.JPanel jPanel2;
 	private javax.swing.JScrollPane jScrollPane1;
 	private javax.swing.JTable tbPacientes;
 	private javax.swing.JTextField txtPesquisaPeloNome;
+	private JButton btnNovoAtendimento;
 	// End of variables declaration//GEN-END:variables
 }
