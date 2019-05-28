@@ -158,8 +158,8 @@ public class PessoaDAO {
 		}
 		return funcionarios;
 	}
-
 	// termina o funcionario
+	
 	// começa o paciente
 	public void createPaciente(Paciente p) {
 

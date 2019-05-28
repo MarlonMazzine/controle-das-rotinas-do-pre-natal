@@ -6,15 +6,21 @@
 package br.com.marlonenathan.telas;
 
 import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.Font;
+import java.awt.Rectangle;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.JButton;
+import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
-import br.com.marlonenathan.model.bean.Funcionario;
-import br.com.marlonenathan.model.dao.PessoaDAO;
+import br.com.marlonenathan.model.bean.Atendimento;
+import br.com.marlonenathan.model.dao.AtendimentoDAO;
 
 /**
  *
@@ -32,14 +38,13 @@ public final class TelaListaDeAtendimentos extends javax.swing.JFrame {
 	 */
 	public TelaListaDeAtendimentos() {
 		initComponents();
-		DefaultTableModel modelo = (DefaultTableModel) tbFuncionario.getModel();
-		tbFuncionario.setRowSorter(new TableRowSorter<DefaultTableModel>(modelo));
+		DefaultTableModel modelo = (DefaultTableModel) tbAtendimentos.getModel();
+		tbAtendimentos.setRowSorter(new TableRowSorter<DefaultTableModel>(modelo));
 
 		readTable();
 	}
 
-	TelaEditarFuncionario telaEditFunc = new TelaEditarFuncionario();
-	Funcionario f = new Funcionario();
+	Atendimento a = new Atendimento();
 
 	/**
 	 * This method is called from within the constructor to initialize the form.
@@ -55,14 +60,11 @@ public final class TelaListaDeAtendimentos extends javax.swing.JFrame {
 		txtPesquisaPeloNome = new javax.swing.JTextField();
 		btnPesquisar = new javax.swing.JButton();
 		jScrollPane1 = new javax.swing.JScrollPane();
-		tbFuncionario = new javax.swing.JTable();
-		btnIncluir = new javax.swing.JButton();
-		btnEditar = new javax.swing.JButton();
-		btnExcluir = new javax.swing.JButton();
+		tbAtendimentos = new javax.swing.JTable();
 		btnVoltar = new javax.swing.JButton();
 
 		setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-		setTitle("Cadastros de funcionários");
+		setTitle("Lista de atendimentos");
 		setBackground(new java.awt.Color(8, 77, 110));
 		setMinimumSize(new java.awt.Dimension(1280, 720));
 		setResizable(false);
@@ -73,7 +75,7 @@ public final class TelaListaDeAtendimentos extends javax.swing.JFrame {
 		jPanel2.setPreferredSize(new java.awt.Dimension(1280, 720));
 
 		txtPesquisaPeloNome.setFont(new java.awt.Font("Dialog", 0, 16)); // NOI18N
-		txtPesquisaPeloNome.setText("Nome do funcionário");
+		txtPesquisaPeloNome.setText("Nome do paciente");
 		txtPesquisaPeloNome.addFocusListener(new java.awt.event.FocusAdapter() {
 			public void focusGained(java.awt.event.FocusEvent evt) {
 				txtPesquisaPeloNomeFocusGained(evt);
@@ -100,94 +102,36 @@ public final class TelaListaDeAtendimentos extends javax.swing.JFrame {
 			}
 		});
 
-		tbFuncionario.setAutoCreateRowSorter(true);
-		tbFuncionario.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
-		tbFuncionario.setModel(
-				new javax.swing.table.DefaultTableModel(new Object[][] { { null, null, null, null, null, null } },
-						new String[] { "Nome", "CRM", "Telefone", "Nascimento", "usuario", "senha" }) {
-					/**
-					 * 
-					 */
-					private static final long serialVersionUID = 1L;
-					boolean[] canEdit = new boolean[] { false, false, false, false, false, false };
+		tbAtendimentos.setAutoCreateRowSorter(true);
+		tbAtendimentos.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
+		tbAtendimentos.setModel(new javax.swing.table.DefaultTableModel(new Object[][] { { null, null, null, null } },
+				new String[] { "Nome", "SUS", "Data", "Nº do atendimento" }) {
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+			boolean[] canEdit = new boolean[] { false, false, false, false };
 
-					public boolean isCellEditable(int rowIndex, int columnIndex) {
-						return canEdit[columnIndex];
-					}
-				});
-		tbFuncionario.setColumnSelectionAllowed(true);
-		tbFuncionario.setRowHeight(30);
-		jScrollPane1.setViewportView(tbFuncionario);
-		tbFuncionario.getColumnModel().getSelectionModel()
+			public boolean isCellEditable(int rowIndex, int columnIndex) {
+				return canEdit[columnIndex];
+			}
+		});
+		tbAtendimentos.setColumnSelectionAllowed(true);
+		tbAtendimentos.setRowHeight(30);
+		jScrollPane1.setViewportView(tbAtendimentos);
+		tbAtendimentos.getColumnModel().getSelectionModel()
 				.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-		if (tbFuncionario.getColumnModel().getColumnCount() > 0) {
-			tbFuncionario.getColumnModel().getColumn(1).setMinWidth(150);
-			tbFuncionario.getColumnModel().getColumn(1).setPreferredWidth(150);
-			tbFuncionario.getColumnModel().getColumn(1).setMaxWidth(150);
-			tbFuncionario.getColumnModel().getColumn(2).setMinWidth(170);
-			tbFuncionario.getColumnModel().getColumn(2).setPreferredWidth(170);
-			tbFuncionario.getColumnModel().getColumn(2).setMaxWidth(170);
-			tbFuncionario.getColumnModel().getColumn(3).setMinWidth(150);
-			tbFuncionario.getColumnModel().getColumn(3).setPreferredWidth(150);
-			tbFuncionario.getColumnModel().getColumn(3).setMaxWidth(150);
-			tbFuncionario.getColumnModel().getColumn(4).setMinWidth(1);
-			tbFuncionario.getColumnModel().getColumn(4).setPreferredWidth(1);
-			tbFuncionario.getColumnModel().getColumn(4).setMaxWidth(1);
-			tbFuncionario.getColumnModel().getColumn(5).setMinWidth(1);
-			tbFuncionario.getColumnModel().getColumn(5).setPreferredWidth(1);
-			tbFuncionario.getColumnModel().getColumn(5).setMaxWidth(1);
+		if (tbAtendimentos.getColumnModel().getColumnCount() > 0) {
+			tbAtendimentos.getColumnModel().getColumn(1).setMinWidth(200);
+			tbAtendimentos.getColumnModel().getColumn(1).setPreferredWidth(200);
+			tbAtendimentos.getColumnModel().getColumn(1).setMaxWidth(200);
+			tbAtendimentos.getColumnModel().getColumn(2).setMinWidth(110);
+			tbAtendimentos.getColumnModel().getColumn(2).setPreferredWidth(110);
+			tbAtendimentos.getColumnModel().getColumn(2).setMaxWidth(110);
+			tbAtendimentos.getColumnModel().getColumn(3).setMinWidth(130);
+			tbAtendimentos.getColumnModel().getColumn(3).setPreferredWidth(130);
+			tbAtendimentos.getColumnModel().getColumn(3).setMaxWidth(130);
 		}
-
-		btnIncluir.setBackground(new java.awt.Color(0, 153, 102));
-		btnIncluir.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
-		btnIncluir.setForeground(new java.awt.Color(255, 255, 255));
-		btnIncluir.setIcon(
-				new javax.swing.ImageIcon(getClass().getResource("/br/com/marlonenathan/imagens/adicionarPessoa.png"))); // NOI18N
-		btnIncluir.setText("  Incluir");
-		btnIncluir.setToolTipText("");
-		btnIncluir.setBorderPainted(false);
-		btnIncluir.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-		btnIncluir.setFocusCycleRoot(true);
-		btnIncluir.setFocusPainted(false);
-		btnIncluir.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				btnIncluirActionPerformed(evt);
-			}
-		});
-
-		btnEditar.setBackground(new java.awt.Color(204, 204, 0));
-		btnEditar.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
-		btnEditar.setForeground(new java.awt.Color(255, 255, 255));
-		btnEditar
-				.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/marlonenathan/imagens/editar.png"))); // NOI18N
-		btnEditar.setText("  Editar");
-		btnEditar.setToolTipText("");
-		btnEditar.setBorderPainted(false);
-		btnEditar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-		btnEditar.setFocusCycleRoot(true);
-		btnEditar.setFocusPainted(false);
-		btnEditar.addMouseListener(new java.awt.event.MouseAdapter() {
-			public void mouseClicked(java.awt.event.MouseEvent evt) {
-				btnEditarMouseClicked(evt);
-			}
-		});
-
-		btnExcluir.setBackground(new java.awt.Color(204, 51, 0));
-		btnExcluir.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
-		btnExcluir.setForeground(new java.awt.Color(255, 255, 255));
-		btnExcluir
-				.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/marlonenathan/imagens/romver.png"))); // NOI18N
-		btnExcluir.setText("  Excluir");
-		btnExcluir.setToolTipText("");
-		btnExcluir.setBorderPainted(false);
-		btnExcluir.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-		btnExcluir.setFocusCycleRoot(true);
-		btnExcluir.setFocusPainted(false);
-		btnExcluir.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				btnExcluirActionPerformed(evt);
-			}
-		});
 
 		btnVoltar.setBackground(new java.awt.Color(255, 153, 0));
 		btnVoltar.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
@@ -206,51 +150,50 @@ public final class TelaListaDeAtendimentos extends javax.swing.JFrame {
 			}
 		});
 
+		JButton btnVerAtendimento = new JButton();
+		btnVerAtendimento.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnVerAtendimento.setBounds(new Rectangle(0, 0, 100, 40));
+		btnVerAtendimento.setToolTipText("");
+		btnVerAtendimento.setText("Ver atendimento >>");
+		btnVerAtendimento.setForeground(Color.WHITE);
+		btnVerAtendimento.setFont(new Font("Dialog", Font.BOLD, 18));
+		btnVerAtendimento.setFocusPainted(false);
+		btnVerAtendimento.setFocusCycleRoot(true);
+		btnVerAtendimento.setBorderPainted(false);
+		btnVerAtendimento.setBackground(new Color(0, 204, 255));
+
 		javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-		jPanel2.setLayout(jPanel2Layout);
-		jPanel2Layout.setHorizontalGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-				.addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-						.addContainerGap(38, Short.MAX_VALUE)
-						.addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-								.addGroup(jPanel2Layout.createSequentialGroup()
-										.addComponent(txtPesquisaPeloNome, javax.swing.GroupLayout.PREFERRED_SIZE, 468,
-												javax.swing.GroupLayout.PREFERRED_SIZE)
-										.addGap(18, 18, 18).addComponent(btnPesquisar,
-												javax.swing.GroupLayout.PREFERRED_SIZE, 79,
-												javax.swing.GroupLayout.PREFERRED_SIZE))
-								.addComponent(jScrollPane1)
-								.addGroup(jPanel2Layout.createSequentialGroup()
-										.addComponent(btnVoltar, javax.swing.GroupLayout.PREFERRED_SIZE, 145,
-												javax.swing.GroupLayout.PREFERRED_SIZE)
-										.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 597,
+		jPanel2Layout.setHorizontalGroup(jPanel2Layout.createParallelGroup(Alignment.TRAILING).addGroup(jPanel2Layout
+				.createSequentialGroup().addContainerGap(38, Short.MAX_VALUE)
+				.addGroup(jPanel2Layout.createParallelGroup(Alignment.LEADING)
+						.addGroup(jPanel2Layout.createSequentialGroup()
+								.addComponent(txtPesquisaPeloNome, GroupLayout.PREFERRED_SIZE, 468,
+										GroupLayout.PREFERRED_SIZE)
+								.addGap(18)
+								.addComponent(btnPesquisar, GroupLayout.PREFERRED_SIZE, 79, GroupLayout.PREFERRED_SIZE))
+						.addGroup(jPanel2Layout.createParallelGroup(Alignment.TRAILING, false)
+								.addGroup(Alignment.LEADING, jPanel2Layout.createSequentialGroup()
+										.addComponent(btnVoltar, GroupLayout.PREFERRED_SIZE, 145,
+												GroupLayout.PREFERRED_SIZE)
+										.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE,
 												Short.MAX_VALUE)
-										.addComponent(btnIncluir, javax.swing.GroupLayout.PREFERRED_SIZE, 145,
-												javax.swing.GroupLayout.PREFERRED_SIZE)
-										.addGap(18, 18, 18)
-										.addComponent(btnEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 145,
-												javax.swing.GroupLayout.PREFERRED_SIZE)
-										.addGap(18, 18, 18).addComponent(btnExcluir,
-												javax.swing.GroupLayout.PREFERRED_SIZE, 145,
-												javax.swing.GroupLayout.PREFERRED_SIZE)))
-						.addGap(29, 29, 29)));
-		jPanel2Layout.setVerticalGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-				.addGroup(jPanel2Layout.createSequentialGroup().addGap(36, 36, 36)
-						.addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-								.addComponent(txtPesquisaPeloNome, javax.swing.GroupLayout.PREFERRED_SIZE, 40,
-										javax.swing.GroupLayout.PREFERRED_SIZE)
-								.addComponent(btnPesquisar, javax.swing.GroupLayout.PREFERRED_SIZE, 40,
-										javax.swing.GroupLayout.PREFERRED_SIZE))
-						.addGap(18, 18, 18).addComponent(jScrollPane1).addGap(18, 18, 18)
-						.addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-								.addComponent(btnVoltar, javax.swing.GroupLayout.PREFERRED_SIZE, 70,
-										javax.swing.GroupLayout.PREFERRED_SIZE)
-								.addComponent(btnIncluir, javax.swing.GroupLayout.PREFERRED_SIZE, 70,
-										javax.swing.GroupLayout.PREFERRED_SIZE)
-								.addComponent(btnEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 70,
-										javax.swing.GroupLayout.PREFERRED_SIZE)
-								.addComponent(btnExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, 70,
-										javax.swing.GroupLayout.PREFERRED_SIZE))
-						.addGap(46, 46, 46)));
+										.addComponent(btnVerAtendimento, GroupLayout.PREFERRED_SIZE, 386,
+												GroupLayout.PREFERRED_SIZE))
+								.addComponent(jScrollPane1, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 1215,
+										GroupLayout.PREFERRED_SIZE)))
+				.addContainerGap(27, Short.MAX_VALUE)));
+		jPanel2Layout.setVerticalGroup(jPanel2Layout.createParallelGroup(Alignment.LEADING).addGroup(jPanel2Layout
+				.createSequentialGroup().addGap(36)
+				.addGroup(jPanel2Layout.createParallelGroup(Alignment.TRAILING)
+						.addComponent(txtPesquisaPeloNome, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)
+						.addComponent(btnPesquisar, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE))
+				.addGap(18).addComponent(jScrollPane1, GroupLayout.PREFERRED_SIZE, 505, GroupLayout.PREFERRED_SIZE)
+				.addGap(18)
+				.addGroup(jPanel2Layout.createParallelGroup(Alignment.LEADING)
+						.addComponent(btnVoltar, GroupLayout.PREFERRED_SIZE, 70, GroupLayout.PREFERRED_SIZE)
+						.addComponent(btnVerAtendimento, GroupLayout.PREFERRED_SIZE, 70, GroupLayout.PREFERRED_SIZE))
+				.addGap(33)));
+		jPanel2.setLayout(jPanel2Layout);
 
 		javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
 		getContentPane().setLayout(layout);
@@ -268,9 +211,13 @@ public final class TelaListaDeAtendimentos extends javax.swing.JFrame {
 
 	String pesquisaPeloNome;
 
+	private static final DateTimeFormatter FBR = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+	private static final LocalDate HOJE = LocalDate.now();
+	private static final String DATA_ATENDIMENTO = HOJE.format(FBR);
+
 	private void txtPesquisaPeloNomeFocusGained(java.awt.event.FocusEvent evt) {// GEN-FIRST:event_txtPesquisaPeloNomeFocusGained
 		pesquisaPeloNome = txtPesquisaPeloNome.getText();
-		if (pesquisaPeloNome.length() > 0 && !txtPesquisaPeloNome.getText().contains("Nome do funcionário")) {
+		if (pesquisaPeloNome.length() > 0 && !txtPesquisaPeloNome.getText().contains("Nome do paciente")) {
 			pesquisaPeloNome = txtPesquisaPeloNome.getText();
 			txtPesquisaPeloNome.setText(pesquisaPeloNome);
 		} else {
@@ -280,85 +227,37 @@ public final class TelaListaDeAtendimentos extends javax.swing.JFrame {
 
 	private void txtPesquisaPeloNomeFocusLost(java.awt.event.FocusEvent evt) {// GEN-FIRST:event_txtPesquisaPeloNomeFocusLost
 		pesquisaPeloNome = txtPesquisaPeloNome.getText();
-		if (pesquisaPeloNome.length() == 0 || txtPesquisaPeloNome.getText().contains("Nome do funcionário")) {
-			txtPesquisaPeloNome.setText("Nome do funcionário");
+		if (pesquisaPeloNome.length() == 0 || txtPesquisaPeloNome.getText().contains("Nome do paciente")) {
+			txtPesquisaPeloNome.setText("Nome do paciente");
 		}
 	}// GEN-LAST:event_txtPesquisaPeloNomeFocusLost
-
-	private void btnIncluirActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jButton2ActionPerformed
-		new TelaCadastraFuncionario().setVisible(true);
-		this.dispose();
-	}// GEN-LAST:event_jButton2ActionPerformed
 
 	private void btnPesquisarActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnPesquisarActionPerformed
 		readTablePeloNome(txtPesquisaPeloNome.getText());
 	}// GEN-LAST:event_btnPesquisarActionPerformed
 
 	private void btnVoltarActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnVoltarActionPerformed
-		new TelaEscolhaChefe().setVisible(true);
+		new TelaEscolhaFuncionario().setVisible(true);
 		this.dispose();
 	}// GEN-LAST:event_btnVoltarActionPerformed
 
-	private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnExcluirActionPerformed
-		int resposta = JOptionPane.showConfirmDialog(null, "Tem certeza de que deseja excluir?", "Confirmar exlusão",
-				JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-
-		if (resposta == JOptionPane.YES_OPTION) {
-			if (tbFuncionario.getSelectedRow() != -1) {
-				Funcionario f = new Funcionario();
-				PessoaDAO pdao = new PessoaDAO();
-
-				f.setDocumento(tbFuncionario.getValueAt(tbFuncionario.getSelectedRow(), 1).toString());
-
-				pdao.deleteFuncionario(f);
-
-				readTable();
-			} else {
-				JOptionPane.showMessageDialog(null, "Selecione um produto para excluir");
-			}
-		}
-	}// GEN-LAST:event_btnExcluirActionPerformed
-
-	private void btnEditarMouseClicked(java.awt.event.MouseEvent evt) {// GEN-FIRST:event_btnEditarMouseClicked
-		if (tbFuncionario.getSelectedRow() != -1) {
-			int index = tbFuncionario.getSelectedRow();
-			TableModel tabela = tbFuncionario.getModel();
-
-			telaEditFunc.setVisible(true);
-			telaEditFunc.pack();
-			telaEditFunc.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-
-			telaEditFunc.txtNome.setText(tabela.getValueAt(index, 0).toString());
-			telaEditFunc.txtCRM.setText(tabela.getValueAt(index, 1).toString());
-			telaEditFunc.txtTelefone.setText(tabela.getValueAt(index, 2).toString());
-			telaEditFunc.txtNascimento.setText(tabela.getValueAt(index, 3).toString());
-
-			readTable();
-			this.dispose();
-		} else {
-			JOptionPane.showMessageDialog(null, "Selecione um funcionário para editar");
-		}
-	}// GEN-LAST:event_btnEditarMouseClicked
-
 	public void readTable() {
-		DefaultTableModel modelo = (DefaultTableModel) tbFuncionario.getModel();
+		DefaultTableModel modelo = (DefaultTableModel) tbAtendimentos.getModel();
 		modelo.setNumRows(0);
-		PessoaDAO pDao = new PessoaDAO();
+		AtendimentoDAO aDao = new AtendimentoDAO();
 
-		for (Funcionario f : pDao.readFuncionario()) {
-			modelo.addRow(new Object[] { f.getNome(), f.getDocumento(), f.getTelefone(), f.getNascimento(),
-					f.getUsuario(), f.getSenha() });
+		for (Atendimento a : aDao.readAtendimentos()) {
+			modelo.addRow(new Object[] { a.getNome(), a.getDocumento(), DATA_ATENDIMENTO, a.getNumDeConsultas() });
 		}
 	}
 
 	public void readTablePeloNome(String nome) {
-		DefaultTableModel modelo = (DefaultTableModel) tbFuncionario.getModel();
+		DefaultTableModel modelo = (DefaultTableModel) tbAtendimentos.getModel();
 		modelo.setNumRows(0);
-		PessoaDAO pDao = new PessoaDAO();
+		AtendimentoDAO aDao = new AtendimentoDAO();
 
-		for (Funcionario f : pDao.buscarFuncionario(nome)) {
-			modelo.addRow(new Object[] { f.getNome(), f.getDocumento(), f.getTelefone(), f.getNascimento(),
-					f.getUsuario(), f.getSenha() });
+		for (Atendimento a : aDao.buscarAtendimento(nome)) {
+			modelo.addRow(new Object[] { a.getNome(), a.getDocumento(), DATA_ATENDIMENTO, a.getNumDeConsultas() });
 		}
 	}
 
@@ -398,15 +297,10 @@ public final class TelaListaDeAtendimentos extends javax.swing.JFrame {
 		});
 	}
 
-	// Variables declaration - do not modify//GEN-BEGIN:variables
-	private javax.swing.JButton btnEditar;
-	private javax.swing.JButton btnExcluir;
 	private javax.swing.JButton btnPesquisar;
 	private javax.swing.JButton btnVoltar;
-	private javax.swing.JButton btnIncluir;
 	private javax.swing.JPanel jPanel2;
 	private javax.swing.JScrollPane jScrollPane1;
-	private javax.swing.JTable tbFuncionario;
+	private javax.swing.JTable tbAtendimentos;
 	private javax.swing.JTextField txtPesquisaPeloNome;
-	// End of variables declaration//GEN-END:variables
 }
