@@ -67,9 +67,9 @@ public class TelaAtendimento extends JFrame {
 	 * Create the frame.
 	 */
 	public TelaAtendimento() {
-		
+
 		ButtonGroup bg = new ButtonGroup();
-		
+
 		setResizable(false);
 		setTitle("Novo atendimento");
 		setSize(new Dimension(1280, 720));
@@ -122,7 +122,7 @@ public class TelaAtendimento extends JFrame {
 		txtSUS = new JTextField();
 		txtSUS.setEditable(false);
 		txtSUS.setFont(new Font("Dialog", Font.PLAIN, 14));
-		txtSUS.setBounds(400, 25, 150, 30);
+		txtSUS.setBounds(400, 25, 160, 30);
 		painel.add(txtSUS);
 		txtSUS.setColumns(10);
 
@@ -189,7 +189,7 @@ public class TelaAtendimento extends JFrame {
 		rdbtnNo.setBackground(new Color(255, 255, 255));
 		rdbtnNo.setBounds(520, 96, 60, 23);
 		painel.add(rdbtnNo);
-		
+
 		JLabel lblPossuiAlgumaDoena = new JLabel("Alguma doença prévia?");
 		lblPossuiAlgumaDoena.setForeground(new Color(255, 255, 255));
 		lblPossuiAlgumaDoena.setFont(new Font("Dialog", Font.BOLD, 14));
@@ -331,10 +331,10 @@ public class TelaAtendimento extends JFrame {
 		observacoes.setBounds(26, 422, 640, 200);
 		painel.add(observacoes);
 
-		JLabel lblNewLabel_7 = new JLabel("Obs.:");
+		JLabel lblNewLabel_7 = new JLabel("Registros do atendimento:");
 		lblNewLabel_7.setForeground(new Color(255, 255, 255));
 		lblNewLabel_7.setFont(new Font("Dialog", Font.BOLD, 14));
-		lblNewLabel_7.setBounds(25, 395, 70, 15);
+		lblNewLabel_7.setBounds(25, 395, 300, 15);
 		painel.add(lblNewLabel_7);
 
 		JButton btnNewButton = new JButton("   Voltar");
@@ -360,8 +360,6 @@ public class TelaAtendimento extends JFrame {
 				Atendimento a = new Atendimento();
 				AtendimentoDAO dao = new AtendimentoDAO();
 
-				int numeroDeConsultas = a.getNumDeConsultas() + 1;
-
 				a.setNome(txtNomePaciente.getText());
 				a.setDocumento(txtSUS.getText());
 				a.setQtdFilhos(qtdFilhos.getValue().hashCode());
@@ -379,7 +377,7 @@ public class TelaAtendimento extends JFrame {
 				a.setIgUSGSemanas(igUSGSemanas.getValue().hashCode());
 				a.setUltimaUSG(ultimaUSG.getText());
 				a.setUltimaMenstruacao(ultimaMenstruacao.getText());
-				a.setNumDeConsultas(numeroDeConsultas); // ver depois
+				a.setNumDeConsultas(1);
 				a.setObservacoes(observacoes.getText());
 
 				if (a.getExameBHCG().replace("[^0-9]", "").length() == 0
@@ -413,6 +411,7 @@ public class TelaAtendimento extends JFrame {
 				}
 			}
 		});
+
 		btnFinalizar.setBorderPainted(false);
 		btnFinalizar.setFocusPainted(false);
 		btnFinalizar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -436,7 +435,7 @@ public class TelaAtendimento extends JFrame {
 		txtAvisos.setEditable(false);
 		txtAvisos.setSelectionColor(new Color(153, 153, 153));
 		txtAvisos.setText("Aqui aparecerá alguns avisos importantes durante o atendimento.");
-		txtAvisos.setBounds(20, 25, 540, 670);
+		txtAvisos.setBounds(20, 25, 540, 657);
 		panel.add(txtAvisos);
 
 		JLabel lblNewLabel_3 = new JLabel("Avisos:");
@@ -444,7 +443,7 @@ public class TelaAtendimento extends JFrame {
 		lblNewLabel_3.setForeground(new Color(255, 255, 255));
 		lblNewLabel_3.setBounds(20, 8, 70, 15);
 		panel.add(lblNewLabel_3);
-		
+
 		bg.add(rdbtnNo);
 		bg.add(rdbtnSim);
 	}
@@ -458,4 +457,5 @@ public class TelaAtendimento extends JFrame {
 		new TelaListaDeAtendimentos().setVisible(true);
 		this.dispose();
 	}
+
 }

@@ -5,10 +5,12 @@
  */
 package br.com.marlonenathan.telas;
 
+import java.awt.Color;
+
+import javax.swing.JOptionPane;
+
 import br.com.marlonenathan.model.bean.Funcionario;
 import br.com.marlonenathan.model.dao.PessoaDAO;
-import java.awt.Color;
-import javax.swing.JOptionPane;
 
 /**
  *

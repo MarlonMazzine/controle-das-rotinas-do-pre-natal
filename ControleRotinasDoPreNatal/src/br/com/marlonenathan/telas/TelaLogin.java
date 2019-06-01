@@ -5,9 +5,11 @@
  */
 package br.com.marlonenathan.telas;
 
-import br.com.marlonenathan.model.dao.UsuarioDAO;
 import java.awt.Color;
+
 import javax.swing.JOptionPane;
+
+import br.com.marlonenathan.model.dao.UsuarioDAO;
 
 /**
  *

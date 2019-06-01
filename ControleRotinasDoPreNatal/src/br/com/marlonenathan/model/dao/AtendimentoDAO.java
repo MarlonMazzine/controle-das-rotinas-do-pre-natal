@@ -74,7 +74,7 @@ public class AtendimentoDAO {
 				atendimentos.add(atendimento);
 			}
 		} catch (SQLException ex) {
-			Logger.getLogger(PessoaDAO.class.getName()).log(Level.SEVERE, null, ex);
+			Logger.getLogger(AtendimentoDAO.class.getName()).log(Level.SEVERE, null, ex);
 		} finally {
 			ConnectionFactory.closeConnection(con, stmt, rs);
 		}
@@ -104,27 +104,10 @@ public class AtendimentoDAO {
 				atendimentos.add(a);
 			}
 		} catch (SQLException ex) {
-			Logger.getLogger(PessoaDAO.class.getName()).log(Level.SEVERE, null, ex);
+			Logger.getLogger(AtendimentoDAO.class.getName()).log(Level.SEVERE, null, ex);
 		} finally {
 			ConnectionFactory.closeConnection(con, stmt, rs);
 		}
 		return atendimentos;
 	}
-
-//	public void pegarNumeroDeAtindimentos(Atendimento a) {
-//
-//		Connection con = ConnectionFactory.getConnection();
-//		PreparedStatement stmt = null;
-//
-//		try {
-//			stmt = con.prepareStatement("update cadastro.atendimento set numConsultas = ? where documento = ?");
-//			
-//			
-////			stmt.setInt(1, x);
-//		} catch (SQLException ex) {
-//			JOptionPane.showMessageDialog(null, "Erro ao adicionar atendimento : " + ex,
-//					"Erro ao salvar atendimento...", JOptionPane.ERROR_MESSAGE);
-//		}
-//
-//	}
 }

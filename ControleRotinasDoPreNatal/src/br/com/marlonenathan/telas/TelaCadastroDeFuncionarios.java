@@ -115,7 +115,6 @@ public final class TelaCadastroDeFuncionarios extends javax.swing.JFrame {
 						return canEdit[columnIndex];
 					}
 				});
-		tbFuncionario.setColumnSelectionAllowed(true);
 		tbFuncionario.setRowHeight(30);
 		jScrollPane1.setViewportView(tbFuncionario);
 		tbFuncionario.getColumnModel().getSelectionModel()

@@ -14,7 +14,7 @@ public abstract class Pessoa {
     protected String nome;
     protected String telefone;
     protected String nascimento;
-    private String documento;
+    protected String documento;
     
     public String getNome() {
         return nome;

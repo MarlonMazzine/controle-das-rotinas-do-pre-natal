@@ -20,6 +20,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
+import br.com.marlonenathan.model.bean.Atendimento;
 import br.com.marlonenathan.model.bean.Paciente;
 import br.com.marlonenathan.model.dao.PessoaDAO;
 
@@ -77,7 +78,7 @@ public final class TelaCadastroDePacientes extends javax.swing.JFrame {
 	TelaEditarPaciente telaEdit = new TelaEditarPaciente();
 	TelaAtendimento telaAtendimento = new TelaAtendimento();
 	Paciente p = new Paciente();
-
+	Atendimento a = new Atendimento();
 	/**
 	 * This method is called from within the constructor to initialize the form.
 	 * WARNING: Do NOT modify this code. The content of this method is always
@@ -332,6 +333,7 @@ public final class TelaCadastroDePacientes extends javax.swing.JFrame {
 
 			telaAtendimento.txtNomePaciente.setText(tabela.getValueAt(index, 0).toString());
 			telaAtendimento.txtSUS.setText(tabela.getValueAt(index, 1).toString());
+			a.setDocumento(tabela.getValueAt(index, 1).toString());
 
 			readTable();
 			this.dispose();
@@ -344,7 +346,7 @@ public final class TelaCadastroDePacientes extends javax.swing.JFrame {
 		DefaultTableModel modelo = (DefaultTableModel) tbPacientes.getModel();
 		modelo.setNumRows(0);
 		PessoaDAO pDao = new PessoaDAO();
-
+		
 		for (Paciente p : pDao.readPaciente()) {
 			modelo.addRow(new Object[] { p.getNome(), p.getDocumento(), p.getTelefone(), p.getNascimento() });
 		}
