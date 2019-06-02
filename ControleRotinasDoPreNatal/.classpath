@@ -6,5 +6,6 @@
 	<classpathentry kind="lib" path="dist/lib/AbsoluteLayout.jar"/>
 	<classpathentry kind="lib" path="dist/lib/mysql-connector-java-5.1.47-bin.jar"/>
 	<classpathentry kind="lib" path="dist/lib/mysql-connector-java-5.1.47.jar"/>
+	<classpathentry kind="lib" path="/home/marlonmazzine/git/controle-das-rotinas-do-pre-natal/ControleRotinasDoPreNatal/dist/lib/itext-4.2.1.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

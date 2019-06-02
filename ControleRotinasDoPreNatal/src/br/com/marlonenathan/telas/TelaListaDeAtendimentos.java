@@ -15,18 +15,27 @@ import java.time.format.DateTimeFormatter;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
 import br.com.marlonenathan.model.bean.Atendimento;
 import br.com.marlonenathan.model.dao.AtendimentoDAO;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 /**
  *
  * @author marlonmazzine
  */
 public final class TelaListaDeAtendimentos extends javax.swing.JFrame {
+
+	DefaultTableModel modelo;
 
 	/**
 	 * 
@@ -38,12 +47,13 @@ public final class TelaListaDeAtendimentos extends javax.swing.JFrame {
 	 */
 	public TelaListaDeAtendimentos() {
 		initComponents();
-		DefaultTableModel modelo = (DefaultTableModel) tbAtendimentos.getModel();
+		modelo = (DefaultTableModel) tbAtendimentos.getModel();
 		tbAtendimentos.setRowSorter(new TableRowSorter<DefaultTableModel>(modelo));
 
 		readTable();
 	}
 
+	TelaAtendimento telaAtendimento = new TelaAtendimento();
 	Atendimento a = new Atendimento();
 
 	/**
@@ -54,13 +64,15 @@ public final class TelaListaDeAtendimentos extends javax.swing.JFrame {
 
 	// <editor-fold defaultstate="collapsed" desc="Generated
 	// Code">//GEN-BEGIN:initComponents
-	private void initComponents() {
+	public void initComponents() {
 
 		jPanel2 = new javax.swing.JPanel();
 		txtPesquisaPeloNome = new javax.swing.JTextField();
 		btnPesquisar = new javax.swing.JButton();
-		jScrollPane1 = new javax.swing.JScrollPane();
 		tbAtendimentos = new javax.swing.JTable();
+		JScrollPane jScrollPane1 = new JScrollPane(tbAtendimentos, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+				JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+		tbAtendimentos.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		btnVoltar = new javax.swing.JButton();
 
 		setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -104,33 +116,79 @@ public final class TelaListaDeAtendimentos extends javax.swing.JFrame {
 
 		tbAtendimentos.setAutoCreateRowSorter(true);
 		tbAtendimentos.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
-		tbAtendimentos.setModel(new javax.swing.table.DefaultTableModel(new Object[][] { { null, null, null, null } },
-				new String[] { "Nome", "SUS", "Data", "Nº do atendimento" }) {
-			/**
-			 * 
-			 */
-			private static final long serialVersionUID = 1L;
-			boolean[] canEdit = new boolean[] { false, false, false, false };
-
-			public boolean isCellEditable(int rowIndex, int columnIndex) {
-				return canEdit[columnIndex];
-			}
-		});
+		tbAtendimentos.setModel(new DefaultTableModel(
+				new Object[][] { { null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+						null, null }, },
+				new String[] { "Nome", "SUS", "Data", "Atendimento", "Filhos", "Gravidez", "Partos", "Abortos",
+						"Doença prévia", "Ult. preventivo", "BHCG", "USG dias", "USG semanas", "Ult. USG",
+						"Ult. menstruação", "Obs." }));
 		tbAtendimentos.setColumnSelectionAllowed(true);
 		tbAtendimentos.setRowHeight(30);
-		jScrollPane1.setViewportView(tbAtendimentos);
-		tbAtendimentos.getColumnModel().getSelectionModel()
-				.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-		if (tbAtendimentos.getColumnModel().getColumnCount() > 0) {
+		if (tbAtendimentos.getColumnModel().getColumnCount() >= 0) {
+			// nome
+			tbAtendimentos.getColumnModel().getColumn(0).setMinWidth(300);
+			tbAtendimentos.getColumnModel().getColumn(0).setPreferredWidth(300);
+			tbAtendimentos.getColumnModel().getColumn(0).setMaxWidth(300);
+			// SUS
 			tbAtendimentos.getColumnModel().getColumn(1).setMinWidth(200);
 			tbAtendimentos.getColumnModel().getColumn(1).setPreferredWidth(200);
 			tbAtendimentos.getColumnModel().getColumn(1).setMaxWidth(200);
+			// data
 			tbAtendimentos.getColumnModel().getColumn(2).setMinWidth(110);
 			tbAtendimentos.getColumnModel().getColumn(2).setPreferredWidth(110);
 			tbAtendimentos.getColumnModel().getColumn(2).setMaxWidth(110);
-			tbAtendimentos.getColumnModel().getColumn(3).setMinWidth(130);
-			tbAtendimentos.getColumnModel().getColumn(3).setPreferredWidth(130);
-			tbAtendimentos.getColumnModel().getColumn(3).setMaxWidth(130);
+			// atendimentos
+			tbAtendimentos.getColumnModel().getColumn(3).setMinWidth(90);
+			tbAtendimentos.getColumnModel().getColumn(3).setPreferredWidth(90);
+			tbAtendimentos.getColumnModel().getColumn(3).setMaxWidth(90);
+			// filhos
+			tbAtendimentos.getColumnModel().getColumn(4).setMinWidth(50);
+			tbAtendimentos.getColumnModel().getColumn(4).setPreferredWidth(50);
+			tbAtendimentos.getColumnModel().getColumn(4).setMaxWidth(50);
+			// gravidez
+			tbAtendimentos.getColumnModel().getColumn(5).setMinWidth(60);
+			tbAtendimentos.getColumnModel().getColumn(5).setPreferredWidth(60);
+			tbAtendimentos.getColumnModel().getColumn(5).setMaxWidth(60);
+			// partos
+			tbAtendimentos.getColumnModel().getColumn(6).setMinWidth(50);
+			tbAtendimentos.getColumnModel().getColumn(6).setPreferredWidth(50);
+			tbAtendimentos.getColumnModel().getColumn(6).setMaxWidth(50);
+			// abortos
+			tbAtendimentos.getColumnModel().getColumn(7).setMinWidth(60);
+			tbAtendimentos.getColumnModel().getColumn(7).setPreferredWidth(60);
+			tbAtendimentos.getColumnModel().getColumn(7).setMaxWidth(60);
+			// doença prévia
+			tbAtendimentos.getColumnModel().getColumn(8).setMinWidth(100);
+			tbAtendimentos.getColumnModel().getColumn(8).setPreferredWidth(100);
+			tbAtendimentos.getColumnModel().getColumn(8).setMaxWidth(100);
+			// ultimo prevetivo
+			tbAtendimentos.getColumnModel().getColumn(9).setMinWidth(110);
+			tbAtendimentos.getColumnModel().getColumn(9).setPreferredWidth(110);
+			tbAtendimentos.getColumnModel().getColumn(9).setMaxWidth(110);
+			// BHCG
+			tbAtendimentos.getColumnModel().getColumn(10).setMinWidth(110);
+			tbAtendimentos.getColumnModel().getColumn(10).setPreferredWidth(110);
+			tbAtendimentos.getColumnModel().getColumn(10).setMaxWidth(110);
+			// USG dias
+			tbAtendimentos.getColumnModel().getColumn(11).setMinWidth(70);
+			tbAtendimentos.getColumnModel().getColumn(11).setPreferredWidth(70);
+			tbAtendimentos.getColumnModel().getColumn(11).setMaxWidth(70);
+			// USG semanas
+			tbAtendimentos.getColumnModel().getColumn(12).setMinWidth(100);
+			tbAtendimentos.getColumnModel().getColumn(12).setPreferredWidth(100);
+			tbAtendimentos.getColumnModel().getColumn(12).setMaxWidth(100);
+			// ultima USG
+			tbAtendimentos.getColumnModel().getColumn(13).setMinWidth(110);
+			tbAtendimentos.getColumnModel().getColumn(13).setPreferredWidth(110);
+			tbAtendimentos.getColumnModel().getColumn(13).setMaxWidth(110);
+			// ultima menstruacao
+			tbAtendimentos.getColumnModel().getColumn(14).setMinWidth(120);
+			tbAtendimentos.getColumnModel().getColumn(14).setPreferredWidth(120);
+			tbAtendimentos.getColumnModel().getColumn(14).setMaxWidth(120);
+			// obs
+			tbAtendimentos.getColumnModel().getColumn(15).setMinWidth(200);
+			tbAtendimentos.getColumnModel().getColumn(15).setPreferredWidth(200);
+			tbAtendimentos.getColumnModel().getColumn(15).setMaxWidth(200);
 		}
 
 		btnVoltar.setBackground(new java.awt.Color(255, 153, 0));
@@ -151,6 +209,11 @@ public final class TelaListaDeAtendimentos extends javax.swing.JFrame {
 		});
 
 		JButton btnVerAtendimento = new JButton();
+		btnVerAtendimento.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				verAtendimento(e);
+			}
+		});
 		btnVerAtendimento.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnVerAtendimento.setBounds(new Rectangle(0, 0, 100, 40));
 		btnVerAtendimento.setToolTipText("");
@@ -241,13 +304,52 @@ public final class TelaListaDeAtendimentos extends javax.swing.JFrame {
 		this.dispose();
 	}// GEN-LAST:event_btnVoltarActionPerformed
 
+	private void verAtendimento(ActionEvent e) {
+		if (tbAtendimentos.getSelectedRow() != -1) {
+			int index = tbAtendimentos.getSelectedRow();
+			TableModel tabela = tbAtendimentos.getModel();
+
+			telaAtendimento.setVisible(true);
+			telaAtendimento.pack();
+			telaAtendimento.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+			telaAtendimento.txtNomePaciente.setText(tabela.getValueAt(index, 0).toString());
+			telaAtendimento.txtSUS.setText(tabela.getValueAt(index, 1).toString());
+			telaAtendimento.qtdFilhos.setValue(tabela.getValueAt(index, 4));
+			telaAtendimento.qtdGravidez.setValue(tabela.getValueAt(index, 5));
+			telaAtendimento.qtdPartos.setValue(tabela.getValueAt(index, 6));
+			telaAtendimento.qtdAbortos.setValue(tabela.getValueAt(index, 7));
+			if (tabela.getValueAt(index, 8).equals(true)) {
+				telaAtendimento.rdbtnSim.setSelected(true);
+			} else {
+				telaAtendimento.rdbtnNo.setSelected(true);
+			}
+			telaAtendimento.dtUltimoPreventivo.setText(tabela.getValueAt(index, 9).toString());
+			telaAtendimento.exameBHCG.setSelectedItem(tabela.getValueAt(index, 10));
+			telaAtendimento.igUSGDias.setValue(tabela.getValueAt(index, 11));
+			telaAtendimento.igUSGSemanas.setValue(tabela.getValueAt(index, 12));
+			telaAtendimento.ultimaUSG.setText(tabela.getValueAt(index, 13).toString());
+			telaAtendimento.ultimaMenstruacao.setText(tabela.getValueAt(index, 14).toString());
+			telaAtendimento.observacoes.setText(tabela.getValueAt(index, 15).toString());
+
+			readTable();
+			this.dispose();
+			telaAtendimento.setLocationRelativeTo(null);
+		} else {
+			JOptionPane.showMessageDialog(null, "Selecione um paciente para editar");
+		}
+	}
+	
 	public void readTable() {
 		DefaultTableModel modelo = (DefaultTableModel) tbAtendimentos.getModel();
 		modelo.setNumRows(0);
 		AtendimentoDAO aDao = new AtendimentoDAO();
 
 		for (Atendimento a : aDao.readAtendimentos()) {
-			modelo.addRow(new Object[] { a.getNome(), a.getDocumento(), DATA_ATENDIMENTO, a.getNumDeConsultas() });
+			modelo.addRow(new Object[] { a.getNome(), a.getDocumento(), DATA_ATENDIMENTO, a.getNumDeConsultas(),
+					a.getQtdFilhos(), a.getQtdGravidez(), a.getQtdPartos(), a.getQtdAbortos(), a.getDoencaPrevia(),
+					a.getDtUltimoPreventivo(), a.getExameBHCG(), a.getIgUSGDias(), a.getIgUSGSemanas(),
+					a.getUltimaUSG(), a.getUltimaMenstruacao(), a.getObservacoes() });
 		}
 	}
 
@@ -257,7 +359,10 @@ public final class TelaListaDeAtendimentos extends javax.swing.JFrame {
 		AtendimentoDAO aDao = new AtendimentoDAO();
 
 		for (Atendimento a : aDao.buscarAtendimento(nome)) {
-			modelo.addRow(new Object[] { a.getNome(), a.getDocumento(), DATA_ATENDIMENTO, a.getNumDeConsultas() });
+			modelo.addRow(new Object[] { a.getNome(), a.getDocumento(), DATA_ATENDIMENTO, a.getNumDeConsultas(),
+					a.getQtdFilhos(), a.getQtdGravidez(), a.getQtdPartos(), a.getQtdAbortos(), a.getDoencaPrevia(),
+					a.getDtUltimoPreventivo(), a.getExameBHCG(), a.getIgUSGDias(), a.getIgUSGSemanas(),
+					a.getUltimaUSG(), a.getUltimaMenstruacao(), a.getObservacoes() });
 		}
 	}
 
@@ -300,7 +405,6 @@ public final class TelaListaDeAtendimentos extends javax.swing.JFrame {
 	private javax.swing.JButton btnPesquisar;
 	private javax.swing.JButton btnVoltar;
 	private javax.swing.JPanel jPanel2;
-	private javax.swing.JScrollPane jScrollPane1;
 	private javax.swing.JTable tbAtendimentos;
 	private javax.swing.JTextField txtPesquisaPeloNome;
 }

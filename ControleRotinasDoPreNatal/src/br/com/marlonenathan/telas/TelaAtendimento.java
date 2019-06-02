@@ -2,10 +2,15 @@ package br.com.marlonenathan.telas;
 
 import java.awt.Color;
 import java.awt.Cursor;
+import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
@@ -27,22 +32,37 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
+import com.lowagie.text.Document;
+import com.lowagie.text.DocumentException;
+import com.lowagie.text.PageSize;
+import com.lowagie.text.Paragraph;
+import com.lowagie.text.pdf.PdfWriter;
+
 import br.com.marlonenathan.model.bean.Atendimento;
 import br.com.marlonenathan.model.dao.AtendimentoDAO;
 
 public class TelaAtendimento extends JFrame {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	JTextField txtNomePaciente;
 	JTextField txtSUS;
+	JSpinner qtdFilhos = new JSpinner();
+	JSpinner qtdGravidez = new JSpinner();
+	JSpinner qtdPartos = new JSpinner();
+	JLabel lblQtdPartos = new JLabel("Qtd. partos");
+	JSpinner qtdAbortos = new JSpinner();
+	JLabel lblQtdAbortos = new JLabel("Qtd. abortos");
+	JRadioButton rdbtnSim = new JRadioButton("Sim");
+	JRadioButton rdbtnNo = new JRadioButton("Não");
+	JFormattedTextField dtUltimoPreventivo = new JFormattedTextField();
+	JComboBox<Object> exameBHCG = new JComboBox<Object>();
+	JSpinner igUSGDias = new JSpinner();
+	JFormattedTextField ultimaUSG = new JFormattedTextField();
+	JFormattedTextField ultimaMenstruacao = new JFormattedTextField();
+	JSpinner igUSGSemanas = new JSpinner();
+	JTextArea observacoes = new JTextArea();
 
-	/**
-	 * Launch the application.
-	 */
 	public static void main(String[] args) {
 		java.awt.EventQueue.invokeLater(() -> {
 			TelaAtendimento frame = new TelaAtendimento();
@@ -63,9 +83,6 @@ public class TelaAtendimento extends JFrame {
 		}
 	}
 
-	/**
-	 * Create the frame.
-	 */
 	public TelaAtendimento() {
 
 		ButtonGroup bg = new ButtonGroup();
@@ -132,7 +149,6 @@ public class TelaAtendimento extends JFrame {
 		lblNewLabel_1.setBounds(400, 8, 70, 15);
 		painel.add(lblNewLabel_1);
 
-		JSpinner qtdFilhos = new JSpinner();
 		qtdFilhos.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), null, new Integer(1)));
 		qtdFilhos.setFont(new Font("Dialog", Font.BOLD, 16));
 		qtdFilhos.setBounds(584, 25, 85, 30);
@@ -144,7 +160,6 @@ public class TelaAtendimento extends JFrame {
 		lblQtdFilhos.setBounds(584, 8, 85, 15);
 		painel.add(lblQtdFilhos);
 
-		JSpinner qtdGravidez = new JSpinner();
 		qtdGravidez.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), null, new Integer(1)));
 		qtdGravidez.setFont(new Font("Dialog", Font.BOLD, 16));
 		qtdGravidez.setBounds(25, 92, 85, 30);
@@ -156,36 +171,30 @@ public class TelaAtendimento extends JFrame {
 		lblNewLabel_2.setBounds(25, 75, 110, 15);
 		painel.add(lblNewLabel_2);
 
-		JSpinner qtdPartos = new JSpinner();
 		qtdPartos.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), null, new Integer(1)));
 		qtdPartos.setFont(new Font("Dialog", Font.BOLD, 16));
 		qtdPartos.setBounds(162, 92, 85, 30);
 		painel.add(qtdPartos);
 
-		JLabel lblQtdPartos = new JLabel("Qtd. partos");
 		lblQtdPartos.setForeground(Color.WHITE);
 		lblQtdPartos.setFont(new Font("Dialog", Font.BOLD, 14));
 		lblQtdPartos.setBounds(162, 75, 110, 15);
 		painel.add(lblQtdPartos);
 
-		JSpinner qtdAbortos = new JSpinner();
 		qtdAbortos.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), null, new Integer(1)));
 		qtdAbortos.setFont(new Font("Dialog", Font.BOLD, 16));
 		qtdAbortos.setBounds(303, 92, 85, 30);
 		painel.add(qtdAbortos);
 
-		JLabel lblQtdAbortos = new JLabel("Qtd. abortos");
 		lblQtdAbortos.setForeground(Color.WHITE);
 		lblQtdAbortos.setFont(new Font("Dialog", Font.BOLD, 14));
 		lblQtdAbortos.setBounds(303, 75, 110, 15);
 		painel.add(lblQtdAbortos);
 
-		JRadioButton rdbtnSim = new JRadioButton("Sim");
 		rdbtnSim.setBackground(new Color(255, 255, 255));
 		rdbtnSim.setBounds(450, 96, 50, 23);
 		painel.add(rdbtnSim);
 
-		JRadioButton rdbtnNo = new JRadioButton("Não");
 		rdbtnNo.setBackground(new Color(255, 255, 255));
 		rdbtnNo.setBounds(520, 96, 60, 23);
 		painel.add(rdbtnNo);
@@ -226,7 +235,6 @@ public class TelaAtendimento extends JFrame {
 		lblNewLabel_5.setBounds(450, 140, 220, 15);
 		painel.add(lblNewLabel_5);
 
-		JFormattedTextField dtUltimoPreventivo = new JFormattedTextField();
 		dtUltimoPreventivo.setBounds(450, 160, 150, 30);
 		try {
 			dtUltimoPreventivo.setFormatterFactory(
@@ -248,7 +256,6 @@ public class TelaAtendimento extends JFrame {
 		lblNewLabel_6.setBounds(15, 138, 407, 40);
 		painel.add(lblNewLabel_6);
 
-		JComboBox<Object> exameBHCG = new JComboBox<Object>();
 		exameBHCG.setBackground(new Color(255, 255, 255));
 		exameBHCG.setForeground(new Color(0, 0, 0));
 		exameBHCG.setFont(new Font("Dialog", Font.BOLD, 14));
@@ -263,7 +270,6 @@ public class TelaAtendimento extends JFrame {
 		lblIdadeGestacionalnnaUsg.setBounds(210, 200, 150, 30);
 		painel.add(lblIdadeGestacionalnnaUsg);
 
-		JSpinner igUSGDias = new JSpinner();
 		igUSGDias.setModel(new SpinnerNumberModel(0, 0, 999, 1));
 		igUSGDias.setForeground(new Color(0, 0, 0));
 		igUSGDias.setFont(new Font("Dialog", Font.BOLD, 14));
@@ -277,7 +283,6 @@ public class TelaAtendimento extends JFrame {
 		lblDataDaltima.setBounds(400, 200, 160, 15);
 		painel.add(lblDataDaltima);
 
-		JFormattedTextField ultimaUSG = new JFormattedTextField();
 		try {
 			ultimaUSG.setFormatterFactory(
 					new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
@@ -294,7 +299,6 @@ public class TelaAtendimento extends JFrame {
 		lblDataDaltima_1.setBounds(25, 280, 120, 30);
 		painel.add(lblDataDaltima_1);
 
-		JFormattedTextField ultimaMenstruacao = new JFormattedTextField();
 		try {
 			ultimaMenstruacao.setFormatterFactory(
 					new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
@@ -305,7 +309,6 @@ public class TelaAtendimento extends JFrame {
 		ultimaMenstruacao.setBounds(25, 315, 150, 30);
 		painel.add(ultimaMenstruacao);
 
-		JSpinner igUSGSemanas = new JSpinner();
 		igUSGSemanas.setForeground(Color.BLACK);
 		igUSGSemanas.setFont(new Font("Dialog", Font.BOLD, 14));
 		igUSGSemanas.setBackground(Color.WHITE);
@@ -324,7 +327,6 @@ public class TelaAtendimento extends JFrame {
 		lblSemanas.setBounds(265, 275, 70, 15);
 		painel.add(lblSemanas);
 
-		JTextArea observacoes = new JTextArea();
 		observacoes.setLineWrap(true);
 		observacoes.setWrapStyleWord(true);
 		observacoes.setFont(new Font("Dialog", Font.PLAIN, 14));
@@ -381,10 +383,7 @@ public class TelaAtendimento extends JFrame {
 				a.setObservacoes(observacoes.getText());
 
 				if (a.getExameBHCG().replace("[^0-9]", "").length() == 0
-						|| a.getUltimaUSG().replace("[^0-9]", "").length() == 0
-						|| a.getUltimaMenstruacao().replace("[^0-9]", "").length() == 0
-						|| a.getObservacoes().replace("[^0-9]", "").length() == 0 || a.getIgUSGDias() == 0
-						|| a.getIgUSGSemanas() == 0) {
+						|| a.getObservacoes().replace("[^0-9]", "").length() == 0) {
 
 					JOptionPane.showMessageDialog(null,
 							"Campos de preenchimento obrigatório:\n'Data do último preventivo'"
@@ -446,6 +445,39 @@ public class TelaAtendimento extends JFrame {
 
 		bg.add(rdbtnNo);
 		bg.add(rdbtnSim);
+
+		JButton btnGerarPedido = new JButton("<html>Gerar pedido<br>de exame</html>");
+		btnGerarPedido.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				Document document = new Document();
+
+				try {
+					PdfWriter.getInstance(document, new FileOutputStream("/home/marlonmazzine/Downloads/document.pdf"));
+
+					document.open();
+					document.setPageSize(PageSize.A5);
+					document.add(new Paragraph(observacoes.getText()));
+				} catch (FileNotFoundException | DocumentException e) {
+					e.printStackTrace();
+				} finally {
+					document.close();
+				}
+
+				try {
+					Desktop.getDesktop().open(new File("/home/marlonmazzine/Downloads/document.pdf"));
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		});
+		btnGerarPedido.setForeground(Color.WHITE);
+		btnGerarPedido.setFocusPainted(false);
+		btnGerarPedido.setBorderPainted(false);
+		btnGerarPedido.setBackground(new Color(51, 204, 255));
+		btnGerarPedido
+				.setIcon(new ImageIcon(TelaAtendimento.class.getResource("/br/com/marlonenathan/imagens/printer.png")));
+		btnGerarPedido.setBounds(521, 360, 145, 50);
+		painel.add(btnGerarPedido);
 	}
 
 	private void btnInformacaoVacinasActionPerformed(ActionEvent evt) {
@@ -457,5 +489,4 @@ public class TelaAtendimento extends JFrame {
 		new TelaListaDeAtendimentos().setVisible(true);
 		this.dispose();
 	}
-
 }

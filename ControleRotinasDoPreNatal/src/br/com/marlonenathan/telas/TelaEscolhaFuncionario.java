@@ -129,7 +129,7 @@ public class TelaEscolhaFuncionario extends javax.swing.JFrame {
 		btnAtendimento.setBackground(new java.awt.Color(255, 153, 0));
 		btnAtendimento.setFont(new java.awt.Font("FreeSans", 1, 18)); // NOI18N
 		btnAtendimento.setForeground(new java.awt.Color(255, 255, 255));
-		btnAtendimento.setText("Atendimento");
+		btnAtendimento.setText("Lista de atendimentos");
 		btnAtendimento.setBorderPainted(false);
 		btnAtendimento.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 		btnAtendimento.setFocusPainted(false);

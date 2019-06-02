@@ -58,7 +58,7 @@ public class Atendimento extends Pessoa {
 		this.qtdAbortos = qtdAbortos;
 	}
 
-	public boolean isDoencaPrevia() {
+	public boolean getDoencaPrevia() {
 		return doencaPrevia;
 	}
 

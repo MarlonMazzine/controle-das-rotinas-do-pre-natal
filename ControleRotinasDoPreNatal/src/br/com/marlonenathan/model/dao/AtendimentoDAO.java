@@ -32,7 +32,7 @@ public class AtendimentoDAO {
 			stmt.setInt(4, a.getQtdGravidez());
 			stmt.setInt(5, a.getQtdPartos());
 			stmt.setInt(6, a.getQtdAbortos());
-			stmt.setBoolean(7, a.isDoencaPrevia());
+			stmt.setBoolean(7, a.getDoencaPrevia());
 			stmt.setString(8, a.getDtUltimoPreventivo());
 			stmt.setString(9, a.getExameBHCG());
 			stmt.setInt(10, a.getIgUSGDias());
@@ -61,7 +61,7 @@ public class AtendimentoDAO {
 		List<Atendimento> atendimentos = new ArrayList<>();
 
 		try {
-			stmt = con.prepareStatement("SELECT nome, documento, numDeConsultas FROM cadastro.atendimento");
+			stmt = con.prepareStatement("SELECT * FROM cadastro.atendimento");
 			rs = stmt.executeQuery();
 
 			while (rs.next()) {
@@ -70,6 +70,18 @@ public class AtendimentoDAO {
 				atendimento.setNome(rs.getString("nome"));
 				atendimento.setDocumento(rs.getString("documento"));
 				atendimento.setNumDeConsultas(rs.getInt("numDeConsultas"));
+				atendimento.setQtdFilhos(rs.getInt("qtdFilhos"));
+				atendimento.setQtdGravidez(rs.getInt("qtdGravidez"));
+				atendimento.setQtdPartos(rs.getInt("qtdPartos"));
+				atendimento.setQtdAbortos(rs.getInt("qtdAbortos"));
+				atendimento.setDoencaPrevia(rs.getBoolean("doencaPrevia"));
+				atendimento.setDtUltimoPreventivo(rs.getString("dtUltimoPreventivo"));
+				atendimento.setExameBHCG(rs.getString("exameBHCG"));
+				atendimento.setIgUSGDias(rs.getInt("igUSGDias"));
+				atendimento.setIgUSGSemanas(rs.getInt("igUSGSemanas"));
+				atendimento.setUltimaUSG(rs.getString("ultimaUSG"));
+				atendimento.setUltimaMenstruacao(rs.getString("ultimaMenstruacao"));
+				atendimento.setObservacoes(rs.getString("observacoes"));
 
 				atendimentos.add(atendimento);
 			}
@@ -95,13 +107,25 @@ public class AtendimentoDAO {
 			rs = stmt.executeQuery();
 
 			while (rs.next()) {
-				Atendimento a = new Atendimento();
+				Atendimento atendimento = new Atendimento();
 
-				a.setNome(rs.getString("nome"));
-				a.setDocumento(rs.getString("documento"));
-				a.setNumDeConsultas(rs.getInt("numDeConsultas"));
+				atendimento.setNome(rs.getString("nome"));
+				atendimento.setDocumento(rs.getString("documento"));
+				atendimento.setNumDeConsultas(rs.getInt("numDeConsultas"));
+				atendimento.setQtdFilhos(rs.getInt("qtdFilhos"));
+				atendimento.setQtdGravidez(rs.getInt("qtdGravidez"));
+				atendimento.setQtdPartos(rs.getInt("qtdPartos"));
+				atendimento.setQtdAbortos(rs.getInt("qtdAbortos"));
+				atendimento.setDoencaPrevia(rs.getBoolean("doencaPrevia"));
+				atendimento.setDtUltimoPreventivo(rs.getString("dtUltimoPreventivo"));
+				atendimento.setExameBHCG(rs.getString("exameBHCG"));
+				atendimento.setIgUSGDias(rs.getInt("igUSGDias"));
+				atendimento.setIgUSGSemanas(rs.getInt("igUSGSemanas"));
+				atendimento.setUltimaUSG(rs.getString("ultimaUSG"));
+				atendimento.setUltimaMenstruacao(rs.getString("ultimaMenstruacao"));
+				atendimento.setObservacoes(rs.getString("observacoes"));
 
-				atendimentos.add(a);
+				atendimentos.add(atendimento);
 			}
 		} catch (SQLException ex) {
 			Logger.getLogger(AtendimentoDAO.class.getName()).log(Level.SEVERE, null, ex);

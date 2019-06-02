@@ -79,6 +79,7 @@ public final class TelaCadastroDePacientes extends javax.swing.JFrame {
 	TelaAtendimento telaAtendimento = new TelaAtendimento();
 	Paciente p = new Paciente();
 	Atendimento a = new Atendimento();
+
 	/**
 	 * This method is called from within the constructor to initialize the form.
 	 * WARNING: Do NOT modify this code. The content of this method is always
@@ -346,7 +347,7 @@ public final class TelaCadastroDePacientes extends javax.swing.JFrame {
 		DefaultTableModel modelo = (DefaultTableModel) tbPacientes.getModel();
 		modelo.setNumRows(0);
 		PessoaDAO pDao = new PessoaDAO();
-		
+
 		for (Paciente p : pDao.readPaciente()) {
 			modelo.addRow(new Object[] { p.getNome(), p.getDocumento(), p.getTelefone(), p.getNascimento() });
 		}
