@@ -5,12 +5,17 @@ import java.awt.Cursor;
 import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
@@ -43,6 +48,7 @@ import br.com.marlonenathan.model.dao.AtendimentoDAO;
 
 public class TelaAtendimento extends JFrame {
 
+	Atendimento a = new Atendimento();
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	JTextField txtNomePaciente;
@@ -62,6 +68,8 @@ public class TelaAtendimento extends JFrame {
 	JFormattedTextField ultimaMenstruacao = new JFormattedTextField();
 	JSpinner igUSGSemanas = new JSpinner();
 	JTextArea observacoes = new JTextArea();
+	private JButton btnAtualizar;
+	JTextArea txtAvisos = new JTextArea();
 
 	public static void main(String[] args) {
 		java.awt.EventQueue.invokeLater(() -> {
@@ -82,6 +90,8 @@ public class TelaAtendimento extends JFrame {
 					.log(java.util.logging.Level.SEVERE, null, ex);
 		}
 	}
+
+	int confirmacaoAtualizar = 0;
 
 	public TelaAtendimento() {
 
@@ -326,6 +336,7 @@ public class TelaAtendimento extends JFrame {
 		lblSemanas.setFont(new Font("Dialog", Font.BOLD, 14));
 		lblSemanas.setBounds(265, 275, 70, 15);
 		painel.add(lblSemanas);
+		observacoes.setMargin(new Insets(5, 5, 5, 5));
 
 		observacoes.setLineWrap(true);
 		observacoes.setWrapStyleWord(true);
@@ -359,7 +370,6 @@ public class TelaAtendimento extends JFrame {
 		JButton btnFinalizar = new JButton("   Finalizar");
 		btnFinalizar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Atendimento a = new Atendimento();
 				AtendimentoDAO dao = new AtendimentoDAO();
 
 				a.setNome(txtNomePaciente.getText());
@@ -386,10 +396,8 @@ public class TelaAtendimento extends JFrame {
 						|| a.getObservacoes().replace("[^0-9]", "").length() == 0) {
 
 					JOptionPane.showMessageDialog(null,
-							"Campos de preenchimento obrigatório:\n'Data do último preventivo'"
-									+ "\n'Exame B.H.C.G.\n'Idade gestacional na USG (dias ou mês)'\n'Data da última USG'\n"
-									+ "'Data da última menstruação'\n'Observações'",
-							"Avisos", JOptionPane.ERROR_MESSAGE);
+							"Campos de preenchimento obrigatório:" + "\n'Exame B.H.C.G.'\n'Observações'", "Avisos",
+							JOptionPane.ERROR_MESSAGE);
 
 				} else if (!rdbtnNo.isSelected() && !rdbtnSim.isSelected()) {
 					JOptionPane.showMessageDialog(null,
@@ -427,14 +435,16 @@ public class TelaAtendimento extends JFrame {
 		contentPane.add(panel);
 		panel.setLayout(null);
 
-		JTextArea txtAvisos = new JTextArea();
-		txtAvisos.setFont(new Font("Dialog", Font.BOLD, 14));
-		txtAvisos.setDisabledTextColor(new Color(153, 153, 153));
+		txtAvisos.setMargin(new Insets(5, 5, 5, 5));
+		txtAvisos.setLineWrap(true);
+		txtAvisos.setWrapStyleWord(true);
+		txtAvisos.setFont(new Font("Dialog", Font.BOLD, 15));
+		txtAvisos.setDisabledTextColor(Color.RED);
 		txtAvisos.setEnabled(false);
 		txtAvisos.setEditable(false);
 		txtAvisos.setSelectionColor(new Color(153, 153, 153));
-		txtAvisos.setText("Aqui aparecerá alguns avisos importantes durante o atendimento.");
-		txtAvisos.setBounds(20, 25, 540, 657);
+		txtAvisos.setText("Clique em atualizar para visualizar alguns avisos importantes deste atendimento.");
+		txtAvisos.setBounds(20, 25, 540, 597);
 		panel.add(txtAvisos);
 
 		JLabel lblNewLabel_3 = new JLabel("Avisos:");
@@ -443,31 +453,29 @@ public class TelaAtendimento extends JFrame {
 		lblNewLabel_3.setBounds(20, 8, 70, 15);
 		panel.add(lblNewLabel_3);
 
+		btnAtualizar = new JButton("   Atualizar");
+		btnAtualizar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				atualizarAvisos(e);
+			}
+		});
+		btnAtualizar.setIcon(
+				new ImageIcon(TelaAtendimento.class.getResource("/br/com/marlonenathan/imagens/atualizar.png")));
+		btnAtualizar.setBounds(415, 642, 145, 50);
+		panel.add(btnAtualizar);
+		btnAtualizar.setForeground(Color.WHITE);
+		btnAtualizar.setFocusPainted(false);
+		btnAtualizar.setBorderPainted(false);
+		btnAtualizar.setBackground(new Color(153, 153, 153));
+
 		bg.add(rdbtnNo);
 		bg.add(rdbtnSim);
 
 		JButton btnGerarPedido = new JButton("<html>Gerar pedido<br>de exame</html>");
+		btnGerarPedido.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnGerarPedido.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				Document document = new Document();
-
-				try {
-					PdfWriter.getInstance(document, new FileOutputStream("/home/marlonmazzine/Downloads/document.pdf"));
-
-					document.open();
-					document.setPageSize(PageSize.A5);
-					document.add(new Paragraph(observacoes.getText()));
-				} catch (FileNotFoundException | DocumentException e) {
-					e.printStackTrace();
-				} finally {
-					document.close();
-				}
-
-				try {
-					Desktop.getDesktop().open(new File("/home/marlonmazzine/Downloads/document.pdf"));
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
+			public void actionPerformed(ActionEvent ex) {
+				gerarPedidoDeExame(ex);
 			}
 		});
 		btnGerarPedido.setForeground(Color.WHITE);
@@ -478,6 +486,78 @@ public class TelaAtendimento extends JFrame {
 				.setIcon(new ImageIcon(TelaAtendimento.class.getResource("/br/com/marlonenathan/imagens/printer.png")));
 		btnGerarPedido.setBounds(521, 360, 145, 50);
 		painel.add(btnGerarPedido);
+	}
+
+	protected void atualizarAvisos(ActionEvent e) {
+
+		LocalDate dateStop = LocalDate.now();
+		DateTimeFormatter formatar = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		LocalDate aniversario;
+		Period idade;
+		int semanas;
+		long diff;
+
+		txtAvisos.setText("");
+
+		if (rdbtnSim.isSelected()) {
+			txtAvisos.append("- Avaliar a necessidade de encaminhar a paciente ao pré-natal de alto risco.\n\n");
+		}
+
+		String dateStartUltimoPreventivo = dtUltimoPreventivo.getText().toString();
+		formatar = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		aniversario = LocalDate.parse(dateStartUltimoPreventivo, formatar);
+		idade = Period.between(aniversario, dateStop);
+
+		if (idade.getYears() > 1) {
+			txtAvisos.append("- Solicitar novo preventivo.\n\n");
+		}
+
+		if (exameBHCG.getSelectedItem().toString().equals("Não possui")) {
+			txtAvisos.append("- Solicitar BHCG e USG TV.\n\n");
+		} else if (exameBHCG.getSelectedItem().toString().equals("Negativo")) {
+			txtAvisos.append("- Encaminhar para a ginecologista.\n\n");
+		}
+
+		String dateStartUltimaUSG = ultimaUSG.getText().toString();
+		aniversario = LocalDate.parse(dateStartUltimaUSG, formatar);
+		diff = ChronoUnit.DAYS.between(aniversario, dateStop);
+		semanas = (int) diff / 7;
+		
+		txtAvisos.append("- Idade gestacional a partir da última USG é de: " + diff + " dias ou " + semanas + " semanas.\n\n");
+		
+		String dateUltimaMestruacao = ultimaMenstruacao.getText().toString();
+		aniversario = LocalDate.parse(dateUltimaMestruacao, formatar);
+		diff = ChronoUnit.DAYS.between(aniversario, dateStop);
+		semanas = (int) diff / 7;
+		
+		txtAvisos.append("- Idade gestacional a partir da última menstruação é de: " + idade.getDays() + " dias ou " + semanas + " semanas.\n\n");
+		
+	}
+
+	protected void gerarPedidoDeExame(ActionEvent ex) {
+		if (observacoes.getText().isEmpty()) {
+			JOptionPane.showMessageDialog(null, "O campo 'Registros do atendimento' é de prenchimento obrigatório!",
+					"Não foi possível gerar pedido de exame...", JOptionPane.ERROR_MESSAGE);
+		} else {
+			Document document = new Document();
+			try {
+				PdfWriter.getInstance(document, new FileOutputStream("/home/marlonmazzine/Downloads/document.pdf"));
+
+				document.open();
+				document.setPageSize(PageSize.A5);
+				document.add(new Paragraph(observacoes.getText()));
+			} catch (FileNotFoundException | DocumentException e) {
+				System.out.println("Erro criar documento: " + e);
+			} finally {
+				document.close();
+			}
+
+			try {
+				Desktop.getDesktop().open(new File("/home/marlonmazzine/Downloads/document.pdf"));
+			} catch (IOException e) {
+				System.out.println("Erro desktop: " + e);
+			}
+		}
 	}
 
 	private void btnInformacaoVacinasActionPerformed(ActionEvent evt) {
