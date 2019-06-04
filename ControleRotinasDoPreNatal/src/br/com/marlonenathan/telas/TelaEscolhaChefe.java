@@ -4,6 +4,8 @@
  * and open the template in the editor.
  */
 package br.com.marlonenathan.telas;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 
 /**
  *
@@ -35,9 +37,12 @@ public class TelaEscolhaChefe extends javax.swing.JFrame {
 
 		jPanel3 = new javax.swing.JPanel();
 		jLabel3 = new javax.swing.JLabel();
-		jPanel1 = new javax.swing.JPanel();
-		jLabel1 = new javax.swing.JLabel();
+		javax.swing.JPanel jPanel1 = new javax.swing.JPanel();
+		JLabel jLabel1 = new javax.swing.JLabel();
+		jLabel1.setBounds(245, 69, 218, 54);
 		jLabel2 = new javax.swing.JLabel();
+		jLabel2.setBounds(65, 47, 99, 97);
+		jLabel2.setIcon(new ImageIcon(TelaEscolhaChefe.class.getResource("/br/com/marlonenathan/imagens/logo.png")));
 		jPanel4 = new javax.swing.JPanel();
 		btnSair = new javax.swing.JButton();
 		jPanel2 = new javax.swing.JPanel();
@@ -81,23 +86,11 @@ public class TelaEscolhaChefe extends javax.swing.JFrame {
 		jLabel1.setText("Bem-vindo");
 
 		jLabel2.setForeground(new java.awt.Color(255, 255, 255));
-		jLabel2.setText("imagem");
-
-		javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-		jPanel1.setLayout(jPanel1Layout);
-		jPanel1Layout.setHorizontalGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-				.addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-						.addGap(73, 73, 73).addComponent(jLabel2)
-						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 117, Short.MAX_VALUE)
-						.addComponent(jLabel1).addGap(37, 37, 37)));
-		jPanel1Layout.setVerticalGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-				.addGroup(javax.swing.GroupLayout.Alignment.TRAILING,
-						jPanel1Layout.createSequentialGroup().addContainerGap(63, Short.MAX_VALUE)
-								.addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-										.addComponent(jLabel1).addComponent(jLabel2))
-								.addGap(63, 63, 63)));
 
 		getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 500, 180));
+		jPanel1.setLayout(null);
+		jPanel1.add(jLabel2);
+		jPanel1.add(jLabel1);
 
 		jPanel4.setBackground(new java.awt.Color(8, 77, 110));
 
@@ -241,10 +234,8 @@ public class TelaEscolhaChefe extends javax.swing.JFrame {
 	private javax.swing.JButton btnSair;
 	private javax.swing.JButton jButton1;
 	private javax.swing.JButton jButton2;
-	private javax.swing.JLabel jLabel1;
 	private javax.swing.JLabel jLabel2;
 	private javax.swing.JLabel jLabel3;
-	private javax.swing.JPanel jPanel1;
 	private javax.swing.JPanel jPanel2;
 	private javax.swing.JPanel jPanel3;
 	private javax.swing.JPanel jPanel4;

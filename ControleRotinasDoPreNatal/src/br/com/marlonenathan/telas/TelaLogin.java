@@ -10,6 +10,12 @@ import java.awt.Color;
 import javax.swing.JOptionPane;
 
 import br.com.marlonenathan.model.dao.UsuarioDAO;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.GroupLayout;
+import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.JLabel;
+import javax.swing.ImageIcon;
+import java.awt.Font;
 
 /**
  *
@@ -41,7 +47,7 @@ public class TelaLogin extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        jLabel1 = new javax.swing.JLabel();
+        JLabel jLabel1 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         btnEntrar = new javax.swing.JButton();
         cbMascararSenha = new javax.swing.JCheckBox();
@@ -55,7 +61,7 @@ public class TelaLogin extends javax.swing.JFrame {
         setResizable(false);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jPanel1.setBackground(new java.awt.Color(0, 102, 255));
+        jPanel1.setBackground(new java.awt.Color(0, 102, 204));
         jPanel1.setMaximumSize(new java.awt.Dimension(470, 213));
         jPanel1.setMinimumSize(new java.awt.Dimension(470, 213));
         jPanel1.setPreferredSize(new java.awt.Dimension(470, 213));
@@ -84,28 +90,38 @@ public class TelaLogin extends javax.swing.JFrame {
                 .addContainerGap(18, Short.MAX_VALUE))
         );
 
-        jLabel1.setFont(new java.awt.Font("Dialog", 1, 30)); // NOI18N
+        jLabel1.setFont(new Font("Noto Sans CJK JP Black", Font.BOLD, 36)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setText("Imagem entra aqui");
+        jLabel1.setText("Bem-vindo");
+        
+        JLabel lblNewLabel = new JLabel("");
+        lblNewLabel.setIcon(new ImageIcon(TelaLogin.class.getResource("/br/com/marlonenathan/imagens/logo.png")));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 470, Short.MAX_VALUE)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel1)
-                .addGap(72, 72, 72))
+        	jPanel1Layout.createParallelGroup(Alignment.TRAILING)
+        		.addComponent(jPanel2, GroupLayout.DEFAULT_SIZE, 470, Short.MAX_VALUE)
+        		.addGroup(jPanel1Layout.createSequentialGroup()
+        			.addGap(75)
+        			.addComponent(lblNewLabel)
+        			.addPreferredGap(ComponentPlacement.RELATED, 85, Short.MAX_VALUE)
+        			.addComponent(jLabel1)
+        			.addGap(32))
         );
         jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(59, 59, 59)
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 66, Short.MAX_VALUE)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+        	jPanel1Layout.createParallelGroup(Alignment.TRAILING)
+        		.addGroup(jPanel1Layout.createSequentialGroup()
+        			.addGroup(jPanel1Layout.createParallelGroup(Alignment.LEADING)
+        				.addGroup(jPanel1Layout.createSequentialGroup()
+        					.addGap(60)
+        					.addComponent(jLabel1))
+        				.addGroup(jPanel1Layout.createSequentialGroup()
+        					.addGap(26)
+        					.addComponent(lblNewLabel)))
+        			.addPreferredGap(ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
+        			.addComponent(jPanel2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
         );
+        jPanel1.setLayout(jPanel1Layout);
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
@@ -293,12 +309,10 @@ public class TelaLogin extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnEntrar;
     private javax.swing.JCheckBox cbMascararSenha;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPasswordField pswSenha;
     private javax.swing.JTextField txtLogin;
-    // End of variables declaration//GEN-END:variables
 }

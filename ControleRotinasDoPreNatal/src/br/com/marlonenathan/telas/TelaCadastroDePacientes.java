@@ -334,7 +334,7 @@ public final class TelaCadastroDePacientes extends javax.swing.JFrame {
 
 			telaAtendimento.txtNomePaciente.setText(tabela.getValueAt(index, 0).toString());
 			telaAtendimento.txtSUS.setText(tabela.getValueAt(index, 1).toString());
-			a.setDocumento(tabela.getValueAt(index, 1).toString());
+			telaAtendimento.a.setNascimento(tabela.getValueAt(index, 3).toString());
 
 			readTable();
 			this.dispose();
@@ -363,18 +363,7 @@ public final class TelaCadastroDePacientes extends javax.swing.JFrame {
 		}
 	}
 
-	/**
-	 * @param args the command line arguments
-	 */
 	public static void main(String args[]) {
-		/* Set the Nimbus look and feel */
-		// <editor-fold defaultstate="collapsed" desc=" Look and feel setting code
-		// (optional) ">
-		/*
-		 * If Nimbus (introduced in Java SE 6) is not available, stay with the default
-		 * look and feel. For details see
-		 * http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
-		 */
 		try {
 			for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
 				if ("".equals(info.getName())) {
@@ -387,11 +376,6 @@ public final class TelaCadastroDePacientes extends javax.swing.JFrame {
 			java.util.logging.Logger.getLogger(TelaCadastroDePacientes.class.getName())
 					.log(java.util.logging.Level.SEVERE, null, ex);
 		}
-		// </editor-fold>
-
-		// </editor-fold>
-
-		/* Create and display the form */
 		java.awt.EventQueue.invokeLater(() -> {
 			TelaCadastroDePacientes telaCadastroDePacientes = new TelaCadastroDePacientes();
 			telaCadastroDePacientes.setVisible(true);
@@ -399,7 +383,6 @@ public final class TelaCadastroDePacientes extends javax.swing.JFrame {
 		});
 	}
 
-	// Variables declaration - do not modify//GEN-BEGIN:variables
 	private javax.swing.JButton btnEditar;
 	private javax.swing.JButton btnExcluir;
 	private javax.swing.JButton btnPesquisar;
@@ -410,5 +393,4 @@ public final class TelaCadastroDePacientes extends javax.swing.JFrame {
 	private javax.swing.JTable tbPacientes;
 	private javax.swing.JTextField txtPesquisaPeloNome;
 	private JButton btnNovoAtendimento;
-	// End of variables declaration//GEN-END:variables
 }

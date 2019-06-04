@@ -47,7 +47,7 @@ import br.com.marlonenathan.model.bean.Atendimento;
 import br.com.marlonenathan.model.dao.AtendimentoDAO;
 
 public class TelaAtendimento extends JFrame {
-
+	
 	Atendimento a = new Atendimento();
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
@@ -434,14 +434,13 @@ public class TelaAtendimento extends JFrame {
 		panel.setBounds(690, 0, 590, 720);
 		contentPane.add(panel);
 		panel.setLayout(null);
+		txtAvisos.setEditable(false);
 
 		txtAvisos.setMargin(new Insets(5, 5, 5, 5));
 		txtAvisos.setLineWrap(true);
 		txtAvisos.setWrapStyleWord(true);
 		txtAvisos.setFont(new Font("Dialog", Font.BOLD, 15));
 		txtAvisos.setDisabledTextColor(Color.RED);
-		txtAvisos.setEnabled(false);
-		txtAvisos.setEditable(false);
 		txtAvisos.setSelectionColor(new Color(153, 153, 153));
 		txtAvisos.setText("Clique em atualizar para visualizar alguns avisos importantes deste atendimento.");
 		txtAvisos.setBounds(20, 25, 540, 597);
@@ -454,6 +453,7 @@ public class TelaAtendimento extends JFrame {
 		panel.add(lblNewLabel_3);
 
 		btnAtualizar = new JButton("   Atualizar");
+		btnAtualizar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnAtualizar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				atualizarAvisos(e);
@@ -490,7 +490,7 @@ public class TelaAtendimento extends JFrame {
 
 	protected void atualizarAvisos(ActionEvent e) {
 
-		LocalDate dateStop = LocalDate.now();
+		LocalDate dataDeHoje = LocalDate.now();
 		DateTimeFormatter formatar = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 		LocalDate aniversario;
 		Period idade;
@@ -503,13 +503,14 @@ public class TelaAtendimento extends JFrame {
 			txtAvisos.append("- Avaliar a necessidade de encaminhar a paciente ao pré-natal de alto risco.\n\n");
 		}
 
-		String dateStartUltimoPreventivo = dtUltimoPreventivo.getText().toString();
-		formatar = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-		aniversario = LocalDate.parse(dateStartUltimoPreventivo, formatar);
-		idade = Period.between(aniversario, dateStop);
+		if (dtUltimoPreventivo.getText().replaceAll("[^0-9]", "").length() != 0) {
+			String dateStartUltimoPreventivo = dtUltimoPreventivo.getText().toString();
+			aniversario = LocalDate.parse(dateStartUltimoPreventivo, formatar);
+			idade = Period.between(aniversario, dataDeHoje);
 
-		if (idade.getYears() > 1) {
-			txtAvisos.append("- Solicitar novo preventivo.\n\n");
+			if (idade.getYears() > 1) {
+				txtAvisos.append("- Solicitar novo preventivo.\n\n");
+			}
 		}
 
 		if (exameBHCG.getSelectedItem().toString().equals("Não possui")) {
@@ -518,20 +519,35 @@ public class TelaAtendimento extends JFrame {
 			txtAvisos.append("- Encaminhar para a ginecologista.\n\n");
 		}
 
-		String dateStartUltimaUSG = ultimaUSG.getText().toString();
-		aniversario = LocalDate.parse(dateStartUltimaUSG, formatar);
-		diff = ChronoUnit.DAYS.between(aniversario, dateStop);
-		semanas = (int) diff / 7;
+		if (ultimaUSG.getText().replaceAll("[^0-9]", "").length() != 0) {
+			String dateStartUltimaUSG = ultimaUSG.getText().toString();
+			aniversario = LocalDate.parse(dateStartUltimaUSG, formatar);
+			diff = ChronoUnit.DAYS.between(aniversario, dataDeHoje);
+			semanas = (int) diff / 7;
+
+			txtAvisos.append("- Idade gestacional a partir da última USG é de: " + diff + " dias ou " + semanas
+					+ " semanas.\n\n");
+		}
+
+		if (ultimaMenstruacao.getText().replaceAll("[^0-9]", "").length() != 0) {
+			String dateUltimaMestruacao = ultimaMenstruacao.getText().toString();
+			aniversario = LocalDate.parse(dateUltimaMestruacao, formatar);
+			diff = ChronoUnit.DAYS.between(aniversario, dataDeHoje);
+			semanas = (int) diff / 7;
+
+			txtAvisos.append("- Idade gestacional a partir da última menstruação é de: " + diff + " dias ou " + semanas
+					+ " semanas.\n\n");
+		}
 		
-		txtAvisos.append("- Idade gestacional a partir da última USG é de: " + diff + " dias ou " + semanas + " semanas.\n\n");
+		String dataNascimento = a.getNascimento();
+		aniversario = LocalDate.parse(dataNascimento, formatar);
+		idade = Period.between(aniversario, dataDeHoje);
 		
-		String dateUltimaMestruacao = ultimaMenstruacao.getText().toString();
-		aniversario = LocalDate.parse(dateUltimaMestruacao, formatar);
-		diff = ChronoUnit.DAYS.between(aniversario, dateStop);
-		semanas = (int) diff / 7;
-		
-		txtAvisos.append("- Idade gestacional a partir da última menstruação é de: " + idade.getDays() + " dias ou " + semanas + " semanas.\n\n");
-		
+		if(idade.getYears() > 25 || qtdFilhos.getValue().hashCode() > 2) {
+			txtAvisos.append("- Encaminhar paciente ao planejamento familiar do município.\n"
+					+ "LEI Nº 9.263, DE 12 DE JANEIRO DE 1996.");
+		}
+
 	}
 
 	protected void gerarPedidoDeExame(ActionEvent ex) {
@@ -561,8 +577,13 @@ public class TelaAtendimento extends JFrame {
 	}
 
 	private void btnInformacaoVacinasActionPerformed(ActionEvent evt) {
-		JOptionPane.showMessageDialog(null, "Hepatite B\nInfluenza\nH1N1\nCólera\nDTPA\n", "Vacinas na gestação",
-				JOptionPane.INFORMATION_MESSAGE);
+		try {
+			Desktop.getDesktop().open(new File(
+					"/home/marlonmazzine/git/controle-das-rotinas-do-pre-natal/"
+					+ "ControleRotinasDoPreNatal/src/br/com/marlonenathan/imagens/vacinacao.png"));
+		} catch (IOException e) {
+			System.out.println("Erro desktop: " + e);
+		}
 	}
 
 	private void clicouNoVoltar(ActionEvent e) {
