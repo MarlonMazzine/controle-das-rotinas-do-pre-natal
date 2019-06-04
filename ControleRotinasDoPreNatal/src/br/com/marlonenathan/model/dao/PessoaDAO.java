@@ -45,7 +45,10 @@ public class PessoaDAO {
 			JOptionPane.showMessageDialog(null, "Salvo com sucesso");
 
 		} catch (SQLException ex) {
-			JOptionPane.showMessageDialog(null, "Erro ao salvar: " + ex);
+			if(ex.getMessage().contains("Duplicate entry")) {
+				JOptionPane.showMessageDialog(null, "Erro ao salvar: código do CRM já existe.", "Documento duplicado",
+						JOptionPane.ERROR_MESSAGE);
+			}
 		} finally {
 			ConnectionFactory.closeConnection(con, stmt);
 		}
@@ -178,7 +181,10 @@ public class PessoaDAO {
 			JOptionPane.showMessageDialog(null, "Salvo com sucesso");
 
 		} catch (SQLException ex) {
-			JOptionPane.showMessageDialog(null, "Erro ao salvar: " + ex);
+			if(ex.getMessage().contains("Duplicate entry")) {
+				JOptionPane.showMessageDialog(null, "Erro ao salvar: código do SUS já existe.", "Documento duplicado",
+						JOptionPane.ERROR_MESSAGE);
+			}
 		} finally {
 			ConnectionFactory.closeConnection(con, stmt);
 		}

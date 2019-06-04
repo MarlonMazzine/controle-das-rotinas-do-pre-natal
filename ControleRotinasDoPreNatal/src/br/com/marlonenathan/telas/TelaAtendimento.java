@@ -543,7 +543,7 @@ public class TelaAtendimento extends JFrame {
 		aniversario = LocalDate.parse(dataNascimento, formatar);
 		idade = Period.between(aniversario, dataDeHoje);
 		
-		if(idade.getYears() > 25 || qtdFilhos.getValue().hashCode() > 2) {
+		if(idade.getYears() >= 25 && qtdFilhos.getValue().hashCode() >= 2) {
 			txtAvisos.append("- Encaminhar paciente ao planejamento familiar do município.\n"
 					+ "LEI Nº 9.263, DE 12 DE JANEIRO DE 1996.");
 		}
